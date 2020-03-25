@@ -9,15 +9,21 @@ public class Parking {
     @PrimaryKey(autoGenerate = true)
     int id;
 
-    @ColumnInfo
-    String name;
+    @ColumnInfo(name = "parking_name")
+   public  String parkingName;
+
+    @ColumnInfo(name = "user_name")
+    public String userName;
+
+    @ColumnInfo(name = "password")
+   public String password;
 
     @ColumnInfo
-    int capacity;
+   public  int capacity;
 
-    @ColumnInfo(name = "owner_name")
-    String ownerName;
+    @ColumnInfo(name = "address_name")
+    public String parkingAddress;
 
     @ColumnInfo(name = "area_name")
-    String areaName;
+    public String areaName;
 }

@@ -7,21 +7,24 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "car_user")
 public class CarUser {
     @PrimaryKey(autoGenerate = true)
-    int id;
+    public int id;
 
-    @ColumnInfo(name = "full_name")
-    String fullName;
+    @ColumnInfo(name = "user_name")
+    public String userName;
+
+    @ColumnInfo(name = "password")
+    public String password;
 
     @ColumnInfo(name = "plate_number")
-    String plateNumber;
+    public String plateNumber;
 
     @ColumnInfo(name = "color")
-    String color;
+    public String color;
 
     @ColumnInfo(name = "car_type")
-    String carType;
+    public String carType;
 
     @ColumnInfo(name = "model_year")
-    String modelYear;
+    public String modelYear;
 
 }

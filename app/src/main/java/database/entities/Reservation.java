@@ -2,11 +2,19 @@ package database.entities;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverter;
+import androidx.room.TypeConverters;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Entity(tableName = "reservation_table")
 public abstract class Reservation {
+
+    @PrimaryKey(autoGenerate = true)
+    int id;
 
     @ColumnInfo(name = "p_id")
     int parkingId;
@@ -14,9 +22,10 @@ public abstract class Reservation {
     @ColumnInfo(name = "u_id")
     int userId;
 
-    @ColumnInfo(name = "from_t")
-    SimpleDateFormat fromTime;
+//    @TypeConverters({Converters.class})
+    public String fromTimeStamp;
 
-    @ColumnInfo(name = "to_t")
-    SimpleDateFormat toTime;
+
+//    @TypeConverters({Converters.class})
+    public String toTimeStamp;
 }

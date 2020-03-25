@@ -34,11 +34,11 @@ private Context context;
         if (isLoggedIn()) {
 
         } else {
+            final Intent intent = new Intent(context, LoginActivity.class);
 
             ownerBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    final Intent intent = new Intent(context, LoginActivity.class);
                     intent.putExtra("isOwner", true);
                     startActivity(intent);
                 }
@@ -47,7 +47,6 @@ private Context context;
             userBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    final Intent intent = new Intent(context, LoginActivity.class);
                     intent.putExtra("isOwner", false);
                     startActivity(intent);
 
