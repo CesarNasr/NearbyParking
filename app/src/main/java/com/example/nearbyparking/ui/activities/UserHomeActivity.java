@@ -1,5 +1,6 @@
 package com.example.nearbyparking.ui.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -19,6 +20,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -30,10 +32,20 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.Menu;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity
+import Helpers.Utilities;
+import database.entities.CarUser;
+import database.entities.Parking;
+
+import static Helpers.Utilities.PREF_USER_TYPE_KEY;
+
+public class UserHomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     int visibleFragmentNb; // used to know which fragment is visible now
+    Boolean isOwner;
+    CarUser user = null;
+    Context context;
+    Gson gson = new Gson();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +53,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        context = this;
+        getUser();
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -55,6 +69,14 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    private void getUser() {
+        Intent intent = getIntent();
+        String userString = intent.getExtras().getString("user");
+        isOwner = Utilities.getBooleanFromSharedPrefs(PREF_USER_TYPE_KEY, context);
+        user = gson.fromJson(userString, CarUser.class);
+        Toast.makeText(context, "Welcome " + user.userName, Toast.LENGTH_LONG).show();
+    }
+
     void startMapsFragment() {
         Fragment fragment = new MyMapFragment();
         if (visibleFragmentNb != 1) {
@@ -63,7 +85,6 @@ public class MainActivity extends AppCompatActivity
             ft.commit();
             visibleFragmentNb = 1;
         }
-
     }
 
     void startContactUsFrag() {
@@ -117,7 +138,8 @@ public class MainActivity extends AppCompatActivity
             startContactUsFrag();
         } else if (id == R.id.nav_license_agreement) {
             startLicenseAgreementFrag();
-
+        } else if (id == R.id.nav_logout) {
+            logout();
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -135,5 +157,11 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    private void logout() {
+        Utilities.saveUserToSharedPref(null, context);
+        Intent i = new Intent(context, MasterActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
 
+        startActivity(i);
+    }
 }

@@ -12,10 +12,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nearbyparking.R;
+import com.google.gson.Gson;
 
+import Helpers.Utilities;
 import database.DatabaseHelper;
 import database.entities.CarUser;
 import database.entities.Parking;
+
+import static Helpers.Utilities.PREF_USER_TYPE_KEY;
 
 public class LoginActivity extends AppCompatActivity {
     private boolean isOwner;
@@ -61,13 +65,19 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(Parking parkingOwner, long id) {
                     Toast.makeText(context, "Success", Toast.LENGTH_LONG).show();
+                    saveOwner(parkingOwner);
 
+                    Gson gson = new Gson();
+                    String usrString = gson.toJson(parkingOwner);
+                    Intent i = new Intent(context, ParkingOwnerHomeActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                    i.putExtra("user", usrString);
+                    startActivity(i);
                 }
 
                 @Override
                 public void onFailure() {
-
-
                     Toast.makeText(context, "Wrong Username or Password", Toast.LENGTH_LONG).show();
                 }
             }).execute();
@@ -80,7 +90,14 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(CarUser user, long id) {
                     Toast.makeText(context, "Success", Toast.LENGTH_LONG).show();
+                    saveUser(user);
+                    Gson gson = new Gson();
+                    String usrString = gson.toJson(user);
+                    Intent i = new Intent(context, UserHomeActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
 
+                    i.putExtra("user", usrString);
+                    startActivity(i);
                 }
 
                 @Override
@@ -90,6 +107,17 @@ public class LoginActivity extends AppCompatActivity {
             }).execute();
 
         }
+    }
+
+
+    private void saveUser(CarUser object) {
+        Utilities.saveUserToSharedPref(object, context);
+        Utilities.saveBooleanToSharedPrefs(false, PREF_USER_TYPE_KEY, context);
+    }
+
+    private void saveOwner(Parking object) {
+        Utilities.saveUserToSharedPref(object, context);
+        Utilities.saveBooleanToSharedPrefs(true, PREF_USER_TYPE_KEY, context);
     }
 
     void onSignupPressed() {

@@ -3,6 +3,7 @@ package com.example.nearbyparking.ui.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -13,14 +14,18 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.nearbyparking.R;
+import com.google.gson.Gson;
 
 import Helpers.Constants;
+import Helpers.Utilities;
 import database.DatabaseHelper;
 import database.entities.CarUser;
 import database.entities.Parking;
 
+import static Helpers.Utilities.PREF_USER_TYPE_KEY;
+
 public class RegisterActivity extends AppCompatActivity {
-    private boolean isParkingOwner;
+    private boolean isOwner;
     private Context context;
     private EditText parkingName, parkingPassword, parkingUserName, parkingCapacity, parkingAdress, userUsername, userPassword, carPlateNumber, carDescription;
     private LinearLayout parkingLayout, userLayout;
@@ -36,9 +41,9 @@ public class RegisterActivity extends AppCompatActivity {
         userLayout = findViewById(R.id.parkingUserView);
         databaseHelper = new DatabaseHelper();
         context = this;
-        isParkingOwner = getIntent().getExtras().getBoolean("isOwner");
+        isOwner = getIntent().getExtras().getBoolean("isOwner");
 
-        if (isParkingOwner) {
+        if (isOwner) {
             userLayout.setVisibility(View.GONE);
             parkingLayout.setVisibility(View.VISIBLE);
             setupParkingOwnerView();
@@ -78,8 +83,19 @@ public class RegisterActivity extends AppCompatActivity {
                 new DatabaseHelper.InsertOwner(parkingOwner, databaseHelper.getParkingDAO(), new DatabaseHelper.ParkingOwnerDBListener() {
                     @Override
                     public void onSuccess(Parking parkingOwner, long id) {
-                        Toast.makeText(context, "parking owner Created!!!", Toast.LENGTH_LONG).show();
+                        saveOwner(parkingOwner);
+
+
+                        Gson gson = new Gson();
+                        String usrString = gson.toJson(parkingOwner);
+                        Intent i = new Intent(context, ParkingOwnerHomeActivity.class);
+                        i.putExtra("user", usrString);
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        finish();
+
+                        startActivity(i);
                     }
+
                     @Override
                     public void onFailure() {
                         Toast.makeText(context, "Username already exists!", Toast.LENGTH_LONG).show();
@@ -114,8 +130,14 @@ public class RegisterActivity extends AppCompatActivity {
                 new DatabaseHelper.InsertUser(carUser, databaseHelper.getCarUserDAO(), new DatabaseHelper.UserDBListener() {
                     @Override
                     public void onSuccess(CarUser user, long id) {
-                        Toast.makeText(context, "User Created!!!", Toast.LENGTH_LONG).show();
+                        saveUser(user);
 
+                        Gson gson = new Gson();
+                        String usrString = gson.toJson(user);
+                        Intent i = new Intent(context, UserHomeActivity.class);
+                        i.putExtra("user", usrString);
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(i);
                     }
 
                     @Override
@@ -127,5 +149,16 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+
+    private void saveUser(CarUser object) {
+        Utilities.saveUserToSharedPref(object, context);
+        Utilities.saveBooleanToSharedPrefs(false, PREF_USER_TYPE_KEY, context);
+    }
+
+    private void saveOwner(Parking object) {
+        Utilities.saveUserToSharedPref(object, context);
+        Utilities.saveBooleanToSharedPrefs(true, PREF_USER_TYPE_KEY, context);
     }
 }

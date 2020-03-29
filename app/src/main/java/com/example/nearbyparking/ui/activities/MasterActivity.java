@@ -8,22 +8,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.nearbyparking.R;
+import com.google.gson.Gson;
 
-import models.Root;
-import network.GetDataService;
-import network.RetrofitClientInstance;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import Helpers.Utilities;
+import database.entities.CarUser;
+import database.entities.Parking;
 
-import static Helpers.Constants.API_KEY;
+import static Helpers.Utilities.PREF_USER_TYPE_KEY;
 
 public class MasterActivity extends AppCompatActivity {
     private Button ownerBtn, userBtn;
-private Context context;
+    private Context context;
+    private Object user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +31,28 @@ private Context context;
         userBtn = findViewById(R.id.user_btn);
         context = this;
         if (isLoggedIn()) {
+
+            Gson gson = new Gson();
+            String usrString = gson.toJson(user);
+
+            if (user instanceof CarUser) {
+//finish();
+                Intent i = new Intent(context, UserHomeActivity.class);
+                i.putExtra("user", usrString);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
+
+            } else if (user instanceof Parking) {
+//                finish();
+                Intent i = new Intent(context, ParkingOwnerHomeActivity.class);
+                i.putExtra("user", usrString);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                startActivity(i);
+            } else {
+
+            }
+
 
         } else {
             final Intent intent = new Intent(context, LoginActivity.class);
@@ -56,7 +77,7 @@ private Context context;
 
         }
 
-//        final Intent intent = new Intent(this, MainActivity.class);
+//        final Intent intent = new Intent(this, UserHomeActivity.class);
 //        startActivity(intent);
 //        finish();
 
@@ -65,8 +86,19 @@ private Context context;
 
 
     private boolean isLoggedIn() {
-        return false;
+        user = Utilities.getCurrentUserFromSharedPrefs(Utilities.getBooleanFromSharedPrefs(PREF_USER_TYPE_KEY, context), context);
+
+        if (user == null)
+            return false;
+        else return true;
+//        return Utilities.getBooleanFromSharedPrefs(PREF_USER_TYPE_KEY, context);
     }
+
+//    private Object getLoggedInUser() {
+//        if (isLoggedIn())
+//            if (user instanceof CarUser)
+//                return
+//    }
 }
 
 

@@ -49,7 +49,7 @@ public class DatabaseHelper {
             if (id == -1) {
                 userDBListener.onFailure();
             } else {
-                userDBListener.onSuccess(null, id);
+                userDBListener.onSuccess(user, id);
             }
         }
     }
@@ -78,7 +78,7 @@ public class DatabaseHelper {
             if (id == -1) {
                 parkingOwnerDBListener.onFailure();
             } else {
-                parkingOwnerDBListener.onSuccess(null, id);
+                parkingOwnerDBListener.onSuccess(parking, id);
             }
         }
     }
