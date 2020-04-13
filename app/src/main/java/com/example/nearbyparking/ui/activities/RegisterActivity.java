@@ -53,7 +53,6 @@ public class RegisterActivity extends AppCompatActivity {
             userLayout.setVisibility(View.VISIBLE);
             setupUserView();
         }
-
     }
 
     private void setupParkingOwnerView() {
@@ -64,6 +63,7 @@ public class RegisterActivity extends AppCompatActivity {
         ownerSpinner = findViewById(R.id.parkingOwnerSpinner);
         registerOwner = findViewById(R.id.registerOwnerBtn);
         parkingCapacity = findViewById(R.id.parkingCapacity);
+
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, Constants.areas);
         ownerSpinner.setAdapter(adapter);
 
@@ -78,19 +78,17 @@ public class RegisterActivity extends AppCompatActivity {
                 parkingOwner.parkingAddress = parkingAdress.getText().toString();
                 parkingOwner.password = parkingPassword.getText().toString();
                 parkingOwner.userName = parkingUserName.getText().toString();
-
+                parkingOwner.parkingName = parkingName.getText().toString();
 
                 new DatabaseHelper.InsertOwner(parkingOwner, databaseHelper.getParkingDAO(), new DatabaseHelper.ParkingOwnerDBListener() {
                     @Override
                     public void onSuccess(Parking parkingOwner, long id) {
                         saveOwner(parkingOwner);
-
-
                         Gson gson = new Gson();
                         String usrString = gson.toJson(parkingOwner);
                         Intent i = new Intent(context, ParkingOwnerHomeActivity.class);
                         i.putExtra("user", usrString);
-                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 //                        finish();
 
                         startActivity(i);
@@ -136,7 +134,7 @@ public class RegisterActivity extends AppCompatActivity {
                         String usrString = gson.toJson(user);
                         Intent i = new Intent(context, UserHomeActivity.class);
                         i.putExtra("user", usrString);
-                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(i);
                     }
 

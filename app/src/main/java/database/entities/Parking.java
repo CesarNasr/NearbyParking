@@ -6,20 +6,25 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "parking_table")
 public class Parking {
+
+    public Parking() {
+
+    }
+
     @PrimaryKey(autoGenerate = true)
     int id;
 
     @ColumnInfo(name = "parking_name")
-   public  String parkingName;
+    public String parkingName;
 
     @ColumnInfo(name = "user_name")
     public String userName;
 
     @ColumnInfo(name = "password")
-   public String password;
+    public String password;
 
     @ColumnInfo
-   public  int capacity;
+    public int capacity;
 
     @ColumnInfo(name = "address_name")
     public String parkingAddress;

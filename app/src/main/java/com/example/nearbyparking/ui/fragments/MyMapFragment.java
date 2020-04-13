@@ -234,7 +234,7 @@ public class MyMapFragment extends Fragment implements OnMapReadyCallback, Locat
                         Log.e("Parking" + i + "Name  ", results.get(i).getName());
                     }
                 } else {
-                    Toast.makeText(getActivity(), "No parking found", Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getActivity(), "No parking found", Toast.LENGTH_LONG).show();
                 }
             }
             @Override

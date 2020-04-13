@@ -54,6 +54,5 @@ public class ParkingOwnerHomeActivity extends AppCompatActivity {
         Intent i = new Intent(context, MasterActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
-
     }
 }

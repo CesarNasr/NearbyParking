@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragments.AreaPickerFragment">
+
+    <TextView
+        android:id="@+id/title_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:gravity="center"
+        android:text="Choose an Area"
+        android:textSize="30dp" />
+
+
+    <TextView
+        android:id="@+id/desc_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title_text"
+        android:layout_margin="40dp"
+        android:gravity="center"
+        android:text="Our partners are ready to serve you in all regions. Making your life easier, faster and more time efficient !!"
+        android:textSize="15dp" />
+
+    <Spinner
+        android:id="@+id/choose_area_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/desc_text"
+        android:layout_centerInParent="true"
+        android:spinnerMode="dropdown" />
+
+
+    <Button
+        android:id="@+id/continue_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/choose_area_spinner"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginRight="40dp"
+        android:background="@drawable/shape_bg_rounded"
+        android:text="Proceed to reservation"
+        android:textAllCaps="false"
+        android:textColor="#ffffff" />
+
+</RelativeLayout>

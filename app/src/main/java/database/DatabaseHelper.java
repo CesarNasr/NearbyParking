@@ -4,6 +4,8 @@ import android.os.AsyncTask;
 
 import com.example.nearbyparking.MyApplication;
 
+import java.util.List;
+
 import database.entities.CarUser;
 import database.entities.CarUserDAO;
 import database.entities.Parking;
@@ -50,6 +52,36 @@ public class DatabaseHelper {
                 userDBListener.onFailure();
             } else {
                 userDBListener.onSuccess(user, id);
+            }
+        }
+    }
+
+//    selectParkingByArea
+
+    public static class GetParkingsByArea extends AsyncTask<Void, Void, List<Parking>> {
+        private ParkingDAO parkingDAO;
+        private String area;
+        private ParkingsDBListener parkingsDBListener;
+
+        public GetParkingsByArea(String area, ParkingDAO parkingDAO, ParkingsDBListener parkingsDBListener) {
+            this.area = area;
+            this.parkingDAO = parkingDAO;
+            this.parkingsDBListener = parkingsDBListener;
+        }
+
+        @Override
+        protected List<Parking> doInBackground(Void... Avoid) {
+            return parkingDAO.selectParkingByArea(area);
+        }
+
+        @Override
+        protected void onPostExecute(List<Parking> parkings) {
+            super.onPostExecute(parkings);
+
+            if (parkings == null) {
+                parkingsDBListener.onFailure();
+            } else {
+                parkingsDBListener.onSuccess(parkings);
             }
         }
     }
@@ -152,6 +184,12 @@ public class DatabaseHelper {
 
     public interface ParkingOwnerDBListener {
         void onSuccess(Parking parkingOwner, long id);
+
+        void onFailure();
+    }
+
+    public interface ParkingsDBListener {
+        void onSuccess(List<Parking> parkings);
 
         void onFailure();
     }

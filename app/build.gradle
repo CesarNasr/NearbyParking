@@ -49,9 +49,9 @@ dependencies {
     implementation 'com.karumi:dexter:4.2.0'
 
     // Room components
-    implementation 'androidx.room:room-runtime:2.0.0'
+    debugImplementation 'androidx.room:room-runtime:2.0.0'
+//    implementation 'com.amitshekhar.android:debug-db:1.0.6'
+
 
     annotationProcessor 'androidx.room:room-compiler:2.0.0'
-
-
 }

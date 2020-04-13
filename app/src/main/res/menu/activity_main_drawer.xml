@@ -16,7 +16,10 @@
             android:id="@+id/nav_license_agreement"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="License Agreement" />
-
+        <item
+            android:id="@+id/nav_reserve"
+            android:icon="@drawable/ic_local_parking"
+            android:title="Reservation" />
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_exit_to_app_black_24dp"

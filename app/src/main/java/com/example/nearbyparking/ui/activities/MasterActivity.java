@@ -49,11 +49,7 @@ public class MasterActivity extends AppCompatActivity {
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
 
                 startActivity(i);
-            } else {
-
-            }
-
-
+            } else {}
         } else {
             final Intent intent = new Intent(context, LoginActivity.class);
 

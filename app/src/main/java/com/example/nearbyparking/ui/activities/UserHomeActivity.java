@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.nearbyparking.R;
+import com.example.nearbyparking.ui.fragments.AreaPickerFragment;
 import com.example.nearbyparking.ui.fragments.ContactUs;
 import com.example.nearbyparking.ui.fragments.LicenseAgreementFrag;
 import com.example.nearbyparking.ui.fragments.MyMapFragment;
+import com.example.nearbyparking.ui.fragments.ReserveFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -87,6 +89,16 @@ public class UserHomeActivity extends AppCompatActivity
         }
     }
 
+    void startReserveFragment() {
+        Fragment fragment = new AreaPickerFragment();
+        if (visibleFragmentNb != 4) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.mainFrame, fragment);
+            ft.commit();
+            visibleFragmentNb = 4;
+        }
+    }
+
     void startContactUsFrag() {
         Fragment fragment = new ContactUs();
 
@@ -140,6 +152,8 @@ public class UserHomeActivity extends AppCompatActivity
             startLicenseAgreementFrag();
         } else if (id == R.id.nav_logout) {
             logout();
+        } else if (id == R.id.nav_reserve) {
+            startReserveFragment();
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -160,7 +174,7 @@ public class UserHomeActivity extends AppCompatActivity
     private void logout() {
         Utilities.saveUserToSharedPref(null, context);
         Intent i = new Intent(context, MasterActivity.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 
         startActivity(i);
     }
