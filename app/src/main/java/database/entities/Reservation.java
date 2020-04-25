@@ -4,26 +4,39 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.sql.Date;
+import java.time.OffsetDateTime;
+
 @Entity(tableName = "reservation_table")
-public abstract class Reservation {
+public class Reservation {
 
     @PrimaryKey(autoGenerate = true)
-    int id;
+    public int id;
 
 
     @ColumnInfo(name = "parking_id")
-    int parkingId;
+    public int parkingId;
 
 
     @ColumnInfo(name = "user_id")
-    int userId;
+    public int userId;
 
     //    @TypeConverters({Converters.class})
     @ColumnInfo(name = "from_time")
-    public String fromTimeStamp;
+    public Date fromTime;
+
+//    public String fromTimeStamp;
+
+//    val joined_date: OffsetDateTime? = null
 
 
     //    @TypeConverters({Converters.class})
     @ColumnInfo(name = "to_time")
-    public String toTimeStamp;
+    public Date toTime;
+
+
+
+
+
+//    public String toTimeStamp;
 }

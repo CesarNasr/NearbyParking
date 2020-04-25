@@ -14,5 +14,4 @@ public class Constants {
     public static final String task_failed = "task_failure";
 
    public static final String[] areas = new String[]{"Hamra","Haddat" ,"Dunes", "Ras-Beirut", "Jeita", "Jbeil", "Jamhour", "Baabda", "Jal El Dib", "Broumana"};
-    public static final String[] times = new String[]{"12:00 - 1:00", "5:00 - 7:00"};
 }

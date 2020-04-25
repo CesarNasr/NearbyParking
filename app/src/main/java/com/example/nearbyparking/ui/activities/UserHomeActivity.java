@@ -45,7 +45,7 @@ public class UserHomeActivity extends AppCompatActivity
 
     int visibleFragmentNb; // used to know which fragment is visible now
     Boolean isOwner;
-    CarUser user = null;
+ public  CarUser user = null;
     Context context;
     Gson gson = new Gson();
 

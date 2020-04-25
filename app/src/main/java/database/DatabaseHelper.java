@@ -4,21 +4,33 @@ import android.os.AsyncTask;
 
 import com.example.nearbyparking.MyApplication;
 
+import java.sql.Date;
 import java.util.List;
 
 import database.entities.CarUser;
 import database.entities.CarUserDAO;
 import database.entities.Parking;
 import database.entities.ParkingDAO;
+import database.entities.Reservation;
+import database.entities.ReservationDAO;
 
 public class DatabaseHelper {
     CarUserDAO carUserDAO;
     ParkingDAO parkingDAO;
+    ReservationDAO reservationDAO;
 
     public DatabaseHelper() {
         this.carUserDAO = MyApplication.getDatabase().carUserDAO();
         this.parkingDAO = MyApplication.getDatabase().parkingDAO();
+        this.reservationDAO = MyApplication.getDatabase().reservationDAO();
+    }
 
+    public ReservationDAO getReservationDAO() {
+        return reservationDAO;
+    }
+
+    public void setReservationDAO(ReservationDAO reservationDAO) {
+        this.reservationDAO = reservationDAO;
     }
 
     public CarUserDAO getCarUserDAO() {
@@ -175,6 +187,68 @@ public class DatabaseHelper {
         }
     }
 
+    public static class InsertReservation extends AsyncTask<Void, Void, Long> {
+        private ReservationDAO reservationDAO;
+        private Reservation reservation;
+        private ReserveDBListener reserveDBListener;
+
+        public InsertReservation(Reservation reservation, ReservationDAO reservationDAO, ReserveDBListener reserveDBListener) {
+            this.reservationDAO = reservationDAO;
+            this.reservation = reservation;
+            this.reserveDBListener = reserveDBListener;
+        }
+
+        @Override
+        protected Long doInBackground(Void... Avoid) {
+            return reservationDAO.insertReservation(reservation);
+        }
+
+        @Override
+        protected void onPostExecute(Long id) {
+            super.onPostExecute(id);
+
+            if (id == -1) {
+                reserveDBListener.onFailure();
+            } else {
+                reserveDBListener.onSuccess(id);
+            }
+        }
+    }
+
+    public static class GetAvailableParkingTimes extends AsyncTask<Void, Void, List<Reservation>> { // TODO getAvailableSlots change it all
+        private ReservationDAO reservationDAO;
+        private int userId, parkingId, parkingCapacity;
+        private Long date;
+
+        private EmptySlotsDBListener emptySlotsDBListener;
+
+        public GetAvailableParkingTimes(int parkingCapacity, int userId, int parkingId, Long date, ReservationDAO reservationDAO, EmptySlotsDBListener emptySlotsDBListener) {
+            this.reservationDAO = reservationDAO;
+            this.userId = userId;
+            this.parkingId = parkingId;
+            this.parkingCapacity = parkingCapacity;
+            this.date = date;
+            this.emptySlotsDBListener = emptySlotsDBListener;
+        }
+
+        @Override
+        protected List<Reservation> doInBackground(Void... Avoid) {
+            List<Long> list = reservationDAO.getAvailableSlots(parkingId, parkingCapacity, userId, date);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(List<Reservation> reservations) {
+            super.onPostExecute(reservations);
+
+            if (reservations == null) {
+                emptySlotsDBListener.onFailure();
+            } else {
+                emptySlotsDBListener.onSuccess(reservations);
+            }
+        }
+    }
+
 
     public interface UserDBListener {
         void onSuccess(CarUser user, long id);
@@ -190,6 +264,20 @@ public class DatabaseHelper {
 
     public interface ParkingsDBListener {
         void onSuccess(List<Parking> parkings);
+
+        void onFailure();
+    }
+
+
+    public interface ReserveDBListener {
+        void onSuccess(Long inserted);
+
+        void onFailure();
+    }
+
+
+    public interface EmptySlotsDBListener {
+        void onSuccess(List<Reservation> emptyReservations);
 
         void onFailure();
     }

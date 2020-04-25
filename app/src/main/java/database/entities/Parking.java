@@ -12,7 +12,7 @@ public class Parking {
     }
 
     @PrimaryKey(autoGenerate = true)
-    int id;
+   public int id;
 
     @ColumnInfo(name = "parking_name")
     public String parkingName;
