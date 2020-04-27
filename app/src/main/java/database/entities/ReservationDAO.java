@@ -37,6 +37,8 @@ public abstract class ReservationDAO {
     //
     @Transaction
     public List<Long> getAvailableSlots(int parkingId, int parkingCapacity, int userId, Long date) {
+
+
         List<Long> emptyReservations = new ArrayList<>();
         SimpleDateFormat formatterDate = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat formatterDateTime = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
@@ -66,7 +68,7 @@ public abstract class ReservationDAO {
 
 
             Long dateInMs = startDate.getTime();
-            for (int i = 0; i < 24; i++) {
+            for (int i = 0; i < 12; i++) {
                 if (!reservationStartTimestampList.contains(dateInMs)) {
                     emptyReservations.add(dateInMs);
                 }

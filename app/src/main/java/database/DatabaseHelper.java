@@ -4,7 +4,6 @@ import android.os.AsyncTask;
 
 import com.example.nearbyparking.MyApplication;
 
-import java.sql.Date;
 import java.util.List;
 
 import database.entities.CarUser;
@@ -215,7 +214,7 @@ public class DatabaseHelper {
         }
     }
 
-    public static class GetAvailableParkingTimes extends AsyncTask<Void, Void, List<Reservation>> { // TODO getAvailableSlots change it all
+    public static class GetAvailableParkingTimes extends AsyncTask<Void, Void, List<Long>> { // TODO getAvailableSlots change it all
         private ReservationDAO reservationDAO;
         private int userId, parkingId, parkingCapacity;
         private Long date;
@@ -232,13 +231,16 @@ public class DatabaseHelper {
         }
 
         @Override
-        protected List<Reservation> doInBackground(Void... Avoid) {
+        protected List<Long> doInBackground(Void... Avoid) {
             List<Long> list = reservationDAO.getAvailableSlots(parkingId, parkingCapacity, userId, date);
-            return null;
+//            List<Reservation> availableReservations = new ArrayList<>();
+
+
+            return list;
         }
 
         @Override
-        protected void onPostExecute(List<Reservation> reservations) {
+        protected void onPostExecute(List<Long> reservations) {
             super.onPostExecute(reservations);
 
             if (reservations == null) {
@@ -277,7 +279,7 @@ public class DatabaseHelper {
 
 
     public interface EmptySlotsDBListener {
-        void onSuccess(List<Reservation> emptyReservations);
+        void onSuccess(List<Long> emptyReservationsTimeOnly);
 
         void onFailure();
     }

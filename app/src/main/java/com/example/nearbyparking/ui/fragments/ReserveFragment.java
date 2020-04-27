@@ -20,9 +20,10 @@ import com.example.nearbyparking.ui.activities.UserHomeActivity;
 import com.google.gson.Gson;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
-import Helpers.Constants;
 import database.DatabaseHelper;
 import database.entities.CarUser;
 import database.entities.Parking;
@@ -41,6 +42,9 @@ public class ReserveFragment extends Fragment {
     private CarUser carUser;
     private Gson gson;
     private Button reserve;
+    private List stringTimes;
+    private List timeStamps = new ArrayList<Long>();
+    final long millisToAdd = 7_200_000; //two hours
 
     public ReserveFragment() {
     }
@@ -91,12 +95,34 @@ public class ReserveFragment extends Fragment {
 
                 new DatabaseHelper.GetAvailableParkingTimes(parking.capacity, carUser.id, parking.id, calendarView.getDate(), databaseHelper.getReservationDAO(), new DatabaseHelper.EmptySlotsDBListener() {
                     @Override
-                    public void onSuccess(List<Reservation> emptyReservations) {
-                        int x = 0;
+                    public void onSuccess(List<Long> emptyReservationsTimeOnly) {
 
-                        String[] times = new String[]{"12:00 - 1:00", "5:00 - 7:00"};
+                        stringTimes = new ArrayList<String>();
+                        timeStamps = new ArrayList<Long>(emptyReservationsTimeOnly);
 
-                        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, times);
+
+                        for (int i = 0; i < emptyReservationsTimeOnly.size(); i++) {
+                            Long fromMs = emptyReservationsTimeOnly.get(i);
+                            Long toMs = emptyReservationsTimeOnly.get(i) + 7140000;
+
+                            SimpleDateFormat formatter = new SimpleDateFormat("hh:mm a");
+                            String fromTime = formatter.format(new Date(fromMs));
+                            String toTime = formatter.format(new Date(toMs));
+                            stringTimes.add(fromTime + " - " + toTime);
+//
+//                            Reservation reservation = new Reservation();
+//                            reservation.fromTime = Date.valueOf(fromTime);
+//                            reservation.toTime = Date.valueOf(toTime);
+                        }
+
+
+//                        for (int i = 0; i < emptyReservationsTimeOnly.size(); i++) {
+//                            String timePeriod = emptyReservationsTimeOnly.get(i).fromTime.toString() + emptyReservationsTimeOnly.get(i).toTime.toString();
+//                            times.add(timePeriod);
+//                        }
+
+
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, stringTimes);
                         timeSpinner.setAdapter(adapter);
                     }
 
@@ -116,16 +142,27 @@ public class ReserveFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                int selectedItemPosition = timeSpinner.getSelectedItemPosition();
+
+
                 Reservation reservation = new Reservation();
                 reservation.parkingId = parking.id;
                 reservation.userId = carUser.id;
-                reservation.fromTime = Date.valueOf(timeSpinner.getSelectedItem().toString());
-                reservation.toTime = Date.valueOf(timeSpinner.getSelectedItem().toString());
+
+
+                java.sql.Date startReservation = new java.sql.Date((Long) timeStamps.get(selectedItemPosition));
+                java.sql.Date endReservation = new java.sql.Date((Long) timeStamps.get(selectedItemPosition) + millisToAdd);
+
+                reservation.fromTime = startReservation;
+                reservation.toTime = endReservation;
 
                 new DatabaseHelper.InsertReservation(reservation, databaseHelper.getReservationDAO(), new DatabaseHelper.ReserveDBListener() {
                     @Override
                     public void onSuccess(Long inserted) {
                         Toast.makeText(context, "Reservation Successful", Toast.LENGTH_LONG).show();
+                        //TODO
+                        // should refresh the list
+                        // should fix issue related to get time from 12 t0 12 and make it get time from current time + x hours
                     }
 
                     @Override

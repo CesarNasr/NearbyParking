@@ -5,7 +5,6 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.sql.Date;
-import java.time.OffsetDateTime;
 
 @Entity(tableName = "reservation_table")
 public class Reservation {
