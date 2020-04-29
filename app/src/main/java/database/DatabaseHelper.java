@@ -214,6 +214,7 @@ public class DatabaseHelper {
         }
     }
 
+
     public static class GetAvailableParkingTimes extends AsyncTask<Void, Void, List<Long>> { // TODO getAvailableSlots change it all
         private ReservationDAO reservationDAO;
         private int userId, parkingId, parkingCapacity;
@@ -252,6 +253,42 @@ public class DatabaseHelper {
     }
 
 
+    public static class GetReservedByParkings extends AsyncTask<Void, Void, List<Reservation>> { // TODO getAvailableSlots change it all
+        private ReservationDAO reservationDAO;
+        private int parkingId, parkingCapacity;
+        private java.sql.Date endDate, startDate;
+
+        private ReservationsPerParkingDBListener reservationsPerParkingDBListener;
+
+        public GetReservedByParkings(int parkingId, java.sql.Date startDate, java.sql.Date endDate, ReservationDAO reservationDAO, ReservationsPerParkingDBListener reservationsPerParkingDBListener) {
+            this.reservationDAO = reservationDAO;
+            this.parkingId = parkingId;
+            this.endDate = endDate;
+            this.startDate = startDate;
+            this.reservationsPerParkingDBListener = reservationsPerParkingDBListener;
+        }
+
+        @Override
+        protected List<Reservation> doInBackground(Void... Avoid) {
+            List<Reservation> list = reservationDAO.getReservationsPerParking(parkingId, startDate, endDate);
+//            List<Reservation> availableReservations = new ArrayList<>();
+
+            return list;
+        }
+
+        @Override
+        protected void onPostExecute(List<Reservation> reservations) {
+            super.onPostExecute(reservations);
+
+            if (reservations == null) {
+                reservationsPerParkingDBListener.onFailure();
+            } else {
+                reservationsPerParkingDBListener.onSuccess(reservations);
+            }
+        }
+    }
+
+
     public interface UserDBListener {
         void onSuccess(CarUser user, long id);
 
@@ -280,6 +317,14 @@ public class DatabaseHelper {
 
     public interface EmptySlotsDBListener {
         void onSuccess(List<Long> emptyReservationsTimeOnly);
+
+        void onFailure();
+    }
+
+
+    public interface ReservationsPerParkingDBListener {
+
+        void onSuccess(List<Reservation> reservations);
 
         void onFailure();
     }

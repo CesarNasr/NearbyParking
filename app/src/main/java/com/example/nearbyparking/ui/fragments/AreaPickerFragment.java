@@ -41,24 +41,16 @@ public class AreaPickerFragment extends Fragment {
         areaPickerBtn = view.findViewById(R.id.continue_btn);
         areaSpinner  = view.findViewById(R.id.choose_area_spinner);
 
-
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, Constants.areas);
         areaSpinner.setAdapter(adapter);
-
         databaseHelper = new DatabaseHelper();
-
 
         areaPickerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 startParkingPickerFragment(areaSpinner.getSelectedItem().toString());
-
             }
         });
-
-
         return view;
     }
 

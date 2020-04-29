@@ -2,6 +2,7 @@ package database.entities;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.sql.Date;
@@ -12,6 +13,8 @@ public class Reservation {
     @PrimaryKey(autoGenerate = true)
     public int id;
 
+    @Ignore
+    public int count;
 
     @ColumnInfo(name = "parking_id")
     public int parkingId;

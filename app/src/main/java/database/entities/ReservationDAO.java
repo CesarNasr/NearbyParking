@@ -21,6 +21,9 @@ public abstract class ReservationDAO {
     public abstract List<Reservation> getReservationsPerDay(int parkingId, int userId, java.util.Date dayStart, java.util.Date dayEnd);
 
 
+    @Query("SELECT from_time, to_time, user_id, parking_id, id, rowid , count(*) AS countt FROM RESERVATION_TABLE WHERE :parkingId = parking_id AND from_time BETWEEN :dayStart AND :dayEnd GROUP BY from_time, to_time ")
+    public abstract List<Reservation> getReservationsPerParking(int parkingId, java.util.Date dayStart, java.util.Date dayEnd);
+
 //    @Query("INSERT ")
 //    void reserveSlot(){
 //    }
@@ -46,6 +49,7 @@ public abstract class ReservationDAO {
         try {
             java.util.Date startDay = formatterDateTime.parse(dateString + " 00:00:00.0");
             java.util.Date endDay = formatterDateTime.parse(dateString + " 23:59:59");
+
             java.sql.Date startDate = new java.sql.Date(startDay.getTime());
             java.sql.Date endDate = new java.sql.Date(endDay.getTime());
 
