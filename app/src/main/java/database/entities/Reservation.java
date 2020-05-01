@@ -13,9 +13,6 @@ public class Reservation {
     @PrimaryKey(autoGenerate = true)
     public int id;
 
-    @Ignore
-    public int count;
-
     @ColumnInfo(name = "parking_id")
     public int parkingId;
 

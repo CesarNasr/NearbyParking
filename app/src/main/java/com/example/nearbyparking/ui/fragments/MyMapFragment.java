@@ -86,7 +86,7 @@ public class MyMapFragment extends Fragment implements OnMapReadyCallback, Locat
         super.onActivityCreated(savedInstanceState);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         if (getActivity() != null) {
-          // fetching the map object from xml layout:fragment_map.xml
+            // fetching the map object from xml layout:fragment_map.xml
             SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map);
             if (mapFragment != null) {
                 //calling to create actually the map (we are initiating it)
@@ -113,9 +113,11 @@ public class MyMapFragment extends Fragment implements OnMapReadyCallback, Locat
             @Override
             public void onProgressChanged(RubberSeekBar rubberSeekBar, int i, boolean b) {
             }
+
             @Override
             public void onStartTrackingTouch(RubberSeekBar rubberSeekBar) {
             }
+
             @Override
             public void onStopTrackingTouch(RubberSeekBar rubberSeekBar) {
                 radius = rubberSeekBar.getCurrentValue();
@@ -172,15 +174,15 @@ public class MyMapFragment extends Fragment implements OnMapReadyCallback, Locat
     }
 
     private void checkForLocation(final Context context) {
-    // checks permission location
-    // checks for GPS
-    //  calls API
+        // checks permission location
+        // checks for GPS
+        //  calls API
         final LocationHelper locationHelper = new LocationHelper();
         PermissionHelper.locationPermissionRequest(getActivity(), context, new PermissionHelper.OnPermissionsGranted() {
             @SuppressLint("MissingPermission")
             @Override
             public void onTaskCompleted(String state) {
-            //map shows user's location
+                //map shows user's location
                 if (state.equals(task_successfull)) {
                     mMap.setMyLocationEnabled(true);
                     locationHelper.isGpsAvailable(context, getActivity(), locationHelper.createGoogleApiClientInstance(context), new LocationHelper.GpsListener() {
@@ -209,6 +211,7 @@ public class MyMapFragment extends Fragment implements OnMapReadyCallback, Locat
                                 }
                             }
                         }
+
                         @Override
                         public void gpsFailure() {
                             Toast.makeText(getActivity(), "GPS Failure ", Toast.LENGTH_SHORT).show();
@@ -220,8 +223,8 @@ public class MyMapFragment extends Fragment implements OnMapReadyCallback, Locat
     }
 
     void apicall(String latlong) {
-    //calls the API of google maps
-    //and send the parameters needed in addition to fetching the results
+        //calls the API of google maps
+        //and send the parameters needed in addition to fetching the results
         GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
         Call<Root> call = service.getPlaces(latlong, String.valueOf(radius), "parking", "false", API_KEY);
         call.enqueue(new Callback<Root>() {
@@ -237,9 +240,12 @@ public class MyMapFragment extends Fragment implements OnMapReadyCallback, Locat
 //                    Toast.makeText(getActivity(), "No parking found", Toast.LENGTH_LONG).show();
                 }
             }
+
             @Override
             public void onFailure(Call<Root> call, Throwable t) {
-                Toast.makeText(getActivity(), "API Error", Toast.LENGTH_LONG).show();
+
+                if (context != null)
+                    Toast.makeText(getActivity(), "API Error", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -261,9 +267,11 @@ public class MyMapFragment extends Fragment implements OnMapReadyCallback, Locat
     @Override
     public void onStatusChanged(String s, int i, Bundle bundle) {
     }
+
     @Override
     public void onProviderEnabled(String s) {
     }
+
     @Override
     public void onProviderDisabled(String s) {
     }
@@ -315,12 +323,12 @@ public class MyMapFragment extends Fragment implements OnMapReadyCallback, Locat
     }
 
     void addMarkers(List<Results> results) {
-    //adds all fetched parking to the map as markers.
-    //putting the lat and long double values in a LONGLAT object(android SDK) to draw it oon the map
-    //creating a marker
-    //setting position for the marker
-    //setting the title for the marker
-    //this will be displayed pn taping on marker
+        //adds all fetched parking to the map as markers.
+        //putting the lat and long double values in a LONGLAT object(android SDK) to draw it oon the map
+        //creating a marker
+        //setting position for the marker
+        //setting the title for the marker
+        //this will be displayed pn taping on marker
         LatLng markerLatLng;
         for (int i = 0; i < results.size(); i++) {
             Results result = results.get(i);

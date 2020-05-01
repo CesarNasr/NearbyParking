@@ -18,13 +18,7 @@ public class CarUser {
     @ColumnInfo(name = "plate_number")
     public String plateNumber;
 
-    @ColumnInfo(name = "color")
-    public String color;
-
     @ColumnInfo(name = "car_type")
     public String carType;
-
-    @ColumnInfo(name = "model_year")
-    public String modelYear;
 
 }

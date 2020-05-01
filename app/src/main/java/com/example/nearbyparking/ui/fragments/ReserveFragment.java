@@ -90,7 +90,6 @@ public class ReserveFragment extends Fragment {
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 GregorianCalendar cal = new GregorianCalendar(year, month, dayOfMonth);
                 long millis = cal.getTimeInMillis();
-//              call  GetAvailableParkingTimes and pass it timestamp
                 getEmptyReservationsData(millis);
             }
         });
