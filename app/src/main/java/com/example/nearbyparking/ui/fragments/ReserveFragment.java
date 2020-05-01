@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import Helpers.Constants;
 import database.DatabaseHelper;
 import database.entities.CarUser;
 import database.entities.Parking;
@@ -43,7 +44,6 @@ public class ReserveFragment extends Fragment {
     private Button reserve;
     private List stringTimes;
     private List timeStamps = new ArrayList<Long>();
-    final long millisToAdd = 7_200_000; //two hours
     private ArrayAdapter<String> adapter;
 
 
@@ -102,7 +102,7 @@ public class ReserveFragment extends Fragment {
                 reservation.parkingId = parking.id;
                 reservation.userId = carUser.id;
                 java.sql.Date startReservation = new java.sql.Date((Long) timeStamps.get(selectedItemPosition));
-                java.sql.Date endReservation = new java.sql.Date((Long) timeStamps.get(selectedItemPosition) + millisToAdd);
+                java.sql.Date endReservation = new java.sql.Date((Long) timeStamps.get(selectedItemPosition) + Constants.millisToAdd);
                 reservation.fromTime = startReservation;
                 reservation.toTime = endReservation;
 

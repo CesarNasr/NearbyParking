@@ -11,11 +11,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import Helpers.Constants;
+
 
 @Dao
 public abstract class ReservationDAO {
-
-    final long millisToAdd = 7_200_000; //two hours
 
     @Query("SELECT * FROM RESERVATION_TABLE WHERE user_id = :userId AND :parkingId = parking_id AND from_time BETWEEN :dayStart AND :dayEnd")
     public abstract List<Reservation> getReservationsPerDay(int parkingId, int userId, java.util.Date dayStart, java.util.Date dayEnd);
@@ -24,14 +24,6 @@ public abstract class ReservationDAO {
     @Query("SELECT from_time, to_time, user_id, parking_id, id, rowid , count(*) AS countt FROM RESERVATION_TABLE WHERE :parkingId = parking_id AND from_time BETWEEN :dayStart AND :dayEnd GROUP BY from_time, to_time ")
     public abstract List<Reservation> getReservationsPerParking(int parkingId, java.util.Date dayStart, java.util.Date dayEnd);
 
-//    @Query("INSERT ")
-//    void reserveSlot(){
-//    }
-//
-//    @Query("SELECT")
-//    void getReservationPerDay() {
-//
-//    }
 
     @Insert
     public abstract long insertReservation(Reservation reservation);
@@ -76,7 +68,7 @@ public abstract class ReservationDAO {
                 if (!reservationStartTimestampList.contains(dateInMs)) {
                     emptyReservations.add(dateInMs);
                 }
-                dateInMs = dateInMs + millisToAdd;
+                dateInMs = dateInMs + Constants.millisToAdd;
             }
 
             return emptyReservations;

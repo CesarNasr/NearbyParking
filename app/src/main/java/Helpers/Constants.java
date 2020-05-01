@@ -1,6 +1,7 @@
 package Helpers;
 
 public class Constants {
+    public static final long millisToAdd = 7_200_000; //two hours
 
     // API CONSTANTS
     public static final String BASE_URL = "https://maps.googleapis.com";

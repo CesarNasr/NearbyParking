@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import Helpers.Constants;
 import Helpers.Utilities;
 import database.DatabaseHelper;
 import database.entities.Converters;
@@ -46,7 +47,7 @@ public class ParkingOwnerHomeActivity extends AppCompatActivity {
     private DatabaseHelper databaseHelper;
     LinearLayout linearLayout;
     private TextView parkingName;
-    Map<Long, Integer> countMap = new HashMap<>();
+    Map<Long, Integer> countMap;
 
 
     @Override
@@ -80,6 +81,9 @@ public class ParkingOwnerHomeActivity extends AppCompatActivity {
             }
         });
 
+
+// get reservations on same day when fragment start
+        getReservations(user.id, System.currentTimeMillis());
 
     }
 
@@ -117,12 +121,10 @@ public class ParkingOwnerHomeActivity extends AppCompatActivity {
 
     }
 
-    final long millisToAdd = 7_200_000; //two hours
 
     private Map<Long, Integer> groupReservations(List<Reservation> reservations, Long date) {
-        List<Reservation> groupedReservations = new ArrayList<>();
-        Long dateMillis = date;
 
+        countMap = new HashMap<>();
 
         for (int i = 0; i < reservations.size(); i++) {
             Reservation reservation = reservations.get(i);
@@ -145,26 +147,30 @@ public class ParkingOwnerHomeActivity extends AppCompatActivity {
 
         SimpleDateFormat formatter = new SimpleDateFormat("hh:mm a");
 
+        linearLayout.removeAllViews();
 
         Iterator it = countMap.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry) it.next();
 
             Long fromTimeMillis = (Long) pair.getKey();
-            Long toTimeMillis = (Long) pair.getKey() + millisToAdd;
+            Long toTimeMillis = (Long) pair.getKey() + Constants.millisToAdd;
 
 
-            String fromTime = formatter.format(new Date(fromTimeMillis));
-            String toTime = formatter.format(new Date(toTimeMillis));
+            if (toTimeMillis < System.currentTimeMillis()) {
 
 
-            TextView text = new TextView(context);
-            text.setText(fromTime + " - " + toTime + " : " + pair.getValue());
-            text.setTextSize(20);
-            text.setGravity(Gravity.CENTER);
-            linearLayout.addView(text);
+                String fromTime = formatter.format(new Date(fromTimeMillis));
+                String toTime = formatter.format(new Date(toTimeMillis));
 
 
+                TextView text = new TextView(context);
+                text.setText(fromTime + " - " + toTime + " : " + pair.getValue());
+                text.setTextSize(20);
+                text.setGravity(Gravity.CENTER);
+                linearLayout.addView(text);
+
+            }
 //            System.out.println(pair.getKey() + " = " + pair.getValue());
 //            it.remove(); // avoids a ConcurrentModificationException
         }
