@@ -22,6 +22,8 @@ public abstract class ParkingDAO {
     @Query("SELECT * FROM parking_table WHERE user_name = :userName AND password = :password")
     public abstract Parking loginParkingUser(String userName, String password);
 
+
+
     @Transaction
     public long insertParkingUser(Parking parkingUser) {
 

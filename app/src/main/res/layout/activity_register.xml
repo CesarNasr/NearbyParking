@@ -33,291 +33,292 @@
             android:textSize="20dp" />
 
     </RelativeLayout>
-<ScrollView
-    android:layout_below="@+id/pageHeader"
 
-    android:scrollbars="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    <!--    Parking Owner view-->
-    <LinearLayout
-        android:id="@+id/parkingOwnerView"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone">
+        android:layout_below="@+id/pageHeader"
+        android:scrollbars="vertical">
 
-
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                style="@style/font"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Username : " />
+            android:layout_height="match_parent">
 
 
-            <EditText
-                android:id="@+id/username"
+            <!--    Parking Owner view-->
+            <LinearLayout
+                android:id="@+id/parkingOwnerView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                android:hint="Ex: BeirutPark01" />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                style="@style/font"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Password :" />
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
 
 
-            <EditText
-                android:id="@+id/parkinPassword"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/font"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Username : " />
+
+
+                    <EditText
+                        android:id="@+id/username"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:hint="Ex: BeirutPark01" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/font"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Password :" />
+
+
+                    <EditText
+                        android:id="@+id/parkinPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:ellipsize="start"
+                        android:hint="Password"
+                        android:inputType="textPassword" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/font"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Parking Name :" />
+
+
+                    <EditText
+                        android:id="@+id/parkingName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Ex: Lot 128" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/font"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Parking Capacity :" />
+
+
+                    <EditText
+                        android:id="@+id/parkingCapacity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Ex: 30"
+                        android:inputType="number" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/font"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Parking Location :" />
+
+                    <Spinner
+                        android:id="@+id/parkingOwnerSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:spinnerMode="dropdown" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/font"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Parking Address :" />
+
+                    <EditText
+                        android:id="@+id/parkingAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Full Address"
+                        android:inputType="textCapSentences|textMultiLine"
+                        android:maxLength="2000"
+                        android:maxLines="4" />
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/registerOwnerBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginRight="30dp"
+                    android:background="@drawable/shape_bg_round_corners"
+
+                    android:text="Register"
+                    android:textColor="#ffffff" />
+            </LinearLayout>
+
+
+            <!--    user view -->
+            <LinearLayout
+                android:id="@+id/parkingUserView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                android:ellipsize="start"
-                android:hint="Password"
-                android:inputType="textPassword" />
-
-        </LinearLayout>
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
 
-            <TextView
-                style="@style/font"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Parking Name :" />
-
-
-            <EditText
-                android:id="@+id/parkingName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Ex: Lot 128" />
-
-        </LinearLayout>
+                    <TextView
+                        style="@style/font"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Username : " />
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
+                    <EditText
+                        android:id="@+id/username_user"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Ex: BeirutPark01" />
 
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                style="@style/font"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Parking Capacity :" />
+                </LinearLayout>
 
 
-            <EditText
-                android:id="@+id/parkingCapacity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:hint="Ex: 30" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                style="@style/font"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Parking Location :" />
-
-            <Spinner
-                android:id="@+id/parkingOwnerSpinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:spinnerMode="dropdown" />
-
-        </LinearLayout>
+                    <TextView
+                        style="@style/font"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Password :" />
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
+                    <EditText
+                        android:id="@+id/userPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="start"
+                        android:hint="Password"
+                        android:inputType="textPassword" />
 
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                style="@style/font"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Parking Address :" />
-
-            <EditText
-                android:id="@+id/parkingAddress"
-                android:layout_width="match_parent"
-                android:hint="Full Address"
-                android:layout_height="wrap_content"
-                android:inputType="textCapSentences|textMultiLine"
-                android:maxLength="2000"
-                android:maxLines="4" />
-
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/registerOwnerBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginRight="30dp"
-            android:background="@drawable/shape_bg_round_corners"
-
-            android:text="Register"
-            android:textColor="#ffffff" />
-    </LinearLayout>
+                </LinearLayout>
 
 
-    <!--    user view -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/parkingUserView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                style="@style/font"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Username : " />
+                    <TextView
+                        style="@style/font"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Car-Plate Number :" />
 
 
-            <EditText
-                android:id="@+id/username_user"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Ex: BeirutPark01" />
+                    <EditText
+                        android:id="@+id/carPlatenumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="A817266" />
 
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                style="@style/font"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Password :" />
+                </LinearLayout>
 
 
-            <EditText
-                android:id="@+id/userPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="start"
-                android:hint="Password"
-                android:inputType="textPassword" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
 
-        </LinearLayout>
+                    <TextView
+                        style="@style/font"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Car Description :" />
 
+                    <EditText
+                        android:id="@+id/carDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Hyudai i10" />
+                </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="vertical">
+                <Button
+                    android:id="@+id/registerUserBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginRight="30dp"
+                    android:background="@drawable/shape_bg_round_corners"
+                    android:text="Register"
+                    android:textColor="#ffffff" />
+            </LinearLayout>
+        </RelativeLayout>
 
-            <TextView
-                style="@style/font"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Car-Plate Number :" />
-
-
-            <EditText
-                android:id="@+id/carPlatenumber"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="A817266" />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                style="@style/font"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Car Description :" />
-
-            <EditText
-                android:id="@+id/carDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Hyudai i10" />
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/registerUserBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginRight="30dp"
-            android:background="@drawable/shape_bg_round_corners"
-            android:text="Register"
-            android:textColor="#ffffff" />
-    </LinearLayout>
-    </RelativeLayout>
-
-</ScrollView>
+    </ScrollView>
 </RelativeLayout>

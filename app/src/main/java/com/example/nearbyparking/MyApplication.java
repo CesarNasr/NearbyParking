@@ -14,9 +14,7 @@ public class MyApplication extends Application {
     private static MyApplication mInstance;
     public static final String DATABASE_NAME = "parkings_database";
 
-    public MyApplication() {
-
-    }
+    public MyApplication() {}
 
 
     @Override

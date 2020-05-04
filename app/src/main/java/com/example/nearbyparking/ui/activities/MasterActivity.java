@@ -35,19 +35,17 @@ public class MasterActivity extends AppCompatActivity {
             Gson gson = new Gson();
             String usrString = gson.toJson(user);
 
-            if (user instanceof CarUser) {
-//finish();
+            if (user instanceof CarUser){
+
                 Intent i = new Intent(context, UserHomeActivity.class);
                 i.putExtra("user", usrString);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
 
             } else if (user instanceof Parking) {
-//                finish();
                 Intent i = new Intent(context, ParkingOwnerHomeActivity.class);
                 i.putExtra("user", usrString);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-
                 startActivity(i);
             } else {}
         } else {
@@ -82,19 +80,13 @@ public class MasterActivity extends AppCompatActivity {
 
 
     private boolean isLoggedIn() {
-        user = Utilities.getCurrentUserFromSharedPrefs(Utilities.getBooleanFromSharedPrefs(PREF_USER_TYPE_KEY, context), context);
+       user = Utilities.getCurrentUserFromSharedPrefs(Utilities.getBooleanFromSharedPrefs(PREF_USER_TYPE_KEY, context), context);
 
         if (user == null)
             return false;
-        else return true;
-//        return Utilities.getBooleanFromSharedPrefs(PREF_USER_TYPE_KEY, context);
-    }
 
-//    private Object getLoggedInUser() {
-//        if (isLoggedIn())
-//            if (user instanceof CarUser)
-//                return
-//    }
+        else return true;
+    }
 }
 
 

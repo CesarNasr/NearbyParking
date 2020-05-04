@@ -27,12 +27,6 @@ public class Utilities {
         }
     }
 
-    public static void saveToSharedPrefs(String data, Context context) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
-        editor.putString(PREF_USER_KEY, data);
-        editor.apply();
-    }
-
 
     public static void saveBooleanToSharedPrefs(Boolean isOwner, String key, Context context) {
         SharedPreferences.Editor editor = context.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
@@ -50,17 +44,26 @@ public class Utilities {
     }
 
 
+
+    public static void saveToSharedPrefs(String data, Context context) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+        editor.putString(PREF_USER_KEY, data);
+        editor.apply();
+    }
+
+
     public static String getFromSharedPrefs(Context context, String key) {
         SharedPreferences prefs = context.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
         return prefs.getString(key, null);
-
     }
 
     public static Object getCurrentUserFromSharedPrefs(Boolean isOwner, Context context) {
 //        Boolean isOwner = getBooleanFromSharedPrefs(PREF_USER_TYPE_KEY, context);
         String userString = getFromSharedPrefs(context, PREF_USER_KEY);
 
+
         Gson gson = new Gson();
+
         if (isOwner) {
             return gson.fromJson(userString, Parking.class);
         } else {

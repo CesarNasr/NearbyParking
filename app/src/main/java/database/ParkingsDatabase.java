@@ -17,11 +17,7 @@ import database.entities.ReservationDAO;
 @Database(entities = {Parking.class, CarUser.class, Reservation.class}, version = 1, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class ParkingsDatabase extends RoomDatabase {
-
     public abstract ParkingDAO parkingDAO();
-
     public abstract CarUserDAO carUserDAO();
-
     public abstract ReservationDAO reservationDAO();
-
 }

@@ -73,6 +73,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 final Parking parkingOwner = new Parking();
+
                 parkingOwner.areaName = ownerSpinner.getSelectedItem().toString();
                 parkingOwner.capacity = Integer.parseInt(parkingCapacity.getText().toString());
                 parkingOwner.parkingAddress = parkingAdress.getText().toString();
