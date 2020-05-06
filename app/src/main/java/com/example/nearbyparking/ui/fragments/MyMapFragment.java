@@ -244,8 +244,8 @@ public class MyMapFragment extends Fragment implements OnMapReadyCallback, Locat
             @Override
             public void onFailure(Call<Root> call, Throwable t) {
 
-                if (context != null)
-                    Toast.makeText(getActivity(), "API Error", Toast.LENGTH_LONG).show();
+//                if (context != null)
+//                    Toast.makeText(getActivity(), "API Error", Toast.LENGTH_LONG).show();
             }
         });
     }

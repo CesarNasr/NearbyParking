@@ -17,8 +17,10 @@ import Helpers.Constants;
 @Dao
 public abstract class ReservationDAO {
 
-    @Query("SELECT * FROM RESERVATION_TABLE WHERE user_id = :userId AND :parkingId = parking_id AND from_time BETWEEN :dayStart AND :dayEnd")
-    public abstract List<Reservation> getReservationsPerDay(int parkingId, int userId, java.util.Date dayStart, java.util.Date dayEnd);
+//        @Query("SELECT * FROM RESERVATION_TABLE WHERE user_id = :userId AND :parkingId = parking_id AND from_time BETWEEN :dayStart AND :dayEnd")
+    //    public abstract List<Reservation> getReservationsPerDay(int parkingId, int userId, java.util.Date dayStart, java.util.Date dayEnd);
+    @Query("SELECT * FROM RESERVATION_TABLE WHERE :parkingId = parking_id AND from_time BETWEEN :dayStart AND :dayEnd")
+    public abstract List<Reservation> getReservationsPerDay(int parkingId, java.util.Date dayStart, java.util.Date dayEnd);
 
 
     @Query("SELECT from_time, to_time, user_id, parking_id, id, rowid , count(*) AS countt FROM RESERVATION_TABLE WHERE :parkingId = parking_id AND from_time BETWEEN :dayStart AND :dayEnd GROUP BY from_time, to_time ")
@@ -35,9 +37,13 @@ public abstract class ReservationDAO {
 
 
         List<Long> emptyReservations = new ArrayList<>();
+
         SimpleDateFormat formatterDate = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat formatterDateTime = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+
         String dateString = formatterDate.format(new Date(date));
+
+
         try {
             java.util.Date startDay = formatterDateTime.parse(dateString + " 00:00:00.0");
             java.util.Date endDay = formatterDateTime.parse(dateString + " 23:59:59");
@@ -45,7 +51,10 @@ public abstract class ReservationDAO {
             java.sql.Date startDate = new java.sql.Date(startDay.getTime());
             java.sql.Date endDate = new java.sql.Date(endDay.getTime());
 
-            List<Reservation> reservationList = getReservationsPerDay(parkingId, userId, startDate, endDate);
+
+
+
+            List<Reservation> reservationList = getReservationsPerDay(parkingId, startDate, endDate);
 
             List<Long> reservationStartTimestampList = new ArrayList<>();
             for (int i = 0; i < reservationList.size(); i++) {
@@ -55,6 +64,7 @@ public abstract class ReservationDAO {
 
             for (int j = 0; j < reservationList.size(); j++) {
                 Reservation reservation = reservationList.get(j);
+
                 if (reservation != null) {
                     if (getNumberOfReservationsPer2Hours(reservationList, reservation) < parkingCapacity && !checkIfUserIdExistsInReservation(userId, reservationList, reservation)) {
                         emptyReservations.add(reservation.fromTime.getTime());
@@ -68,6 +78,8 @@ public abstract class ReservationDAO {
                 if (!reservationStartTimestampList.contains(dateInMs)) {
                     emptyReservations.add(dateInMs);
                 }
+
+
                 dateInMs = dateInMs + Constants.millisToAdd;
             }
 

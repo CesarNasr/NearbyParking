@@ -45,6 +45,7 @@ public class AreaPickerFragment extends Fragment {
         areaSpinner.setAdapter(adapter);
         databaseHelper = new DatabaseHelper();
 
+
         areaPickerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

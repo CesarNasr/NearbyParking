@@ -36,7 +36,6 @@ public class ReserveFragment extends Fragment {
     private Spinner timeSpinner;
     private static final String ARG_PARAM1 = "parking";
     private Parking parking;
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private DatabaseHelper databaseHelper;
     private CarUser carUser;
@@ -74,15 +73,23 @@ public class ReserveFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_reserve, container, false);
         context = getContext();
+
         carUser = ((UserHomeActivity) getActivity()).user;
+
+
         gson = new Gson();
         parking = gson.fromJson(mParam1, Parking.class);
+
+
+
         reserve = view.findViewById(R.id.btn_reserve);
 
         // get time from database
         getEmptyReservationsData(System.currentTimeMillis());
         timeSpinner = view.findViewById(R.id.times_spinner);
         calendarView = view.findViewById(R.id.calendar);
+
+
         calendarView.setMinDate(System.currentTimeMillis() - 1000);
 
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
@@ -96,12 +103,15 @@ public class ReserveFragment extends Fragment {
         reserve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 final int selectedItemPosition = timeSpinner.getSelectedItemPosition();
                 Reservation reservation = new Reservation();
                 reservation.parkingId = parking.id;
                 reservation.userId = carUser.id;
+
                 java.sql.Date startReservation = new java.sql.Date((Long) timeStamps.get(selectedItemPosition));
                 java.sql.Date endReservation = new java.sql.Date((Long) timeStamps.get(selectedItemPosition) + Constants.millisToAdd);
+
                 reservation.fromTime = startReservation;
                 reservation.toTime = endReservation;
 
@@ -111,6 +121,7 @@ public class ReserveFragment extends Fragment {
                         Toast.makeText(context, "Reservation Successful", Toast.LENGTH_LONG).show();
                         stringTimes.remove(selectedItemPosition);
                         timeStamps.remove(selectedItemPosition);
+
                         adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, stringTimes);
                         timeSpinner.setAdapter(adapter);
                     }
@@ -132,7 +143,7 @@ public class ReserveFragment extends Fragment {
             public void onSuccess(List<Long> emptyReservationsTimeOnly) {
 
                 stringTimes = new ArrayList<String>();
-                timeStamps = new ArrayList<Long>(emptyReservationsTimeOnly);
+                timeStamps = new ArrayList<Long>();
                 Long currentTimeStamp = System.currentTimeMillis();
                 SimpleDateFormat formatter = new SimpleDateFormat("hh:mm a");
 
@@ -141,8 +152,10 @@ public class ReserveFragment extends Fragment {
 
                     Long fromMs = emptyReservationsTimeOnly.get(i);
                     Long toMs = emptyReservationsTimeOnly.get(i) + 7140000;
-                    if (currentTimeStamp - fromMs <= 0) {
 
+
+                    if (currentTimeStamp - fromMs <= 0) {
+                        timeStamps.add(fromMs);
                         String fromTime = formatter.format(new Date(fromMs));
                         String toTime = formatter.format(new Date(toMs));
                         stringTimes.add(fromTime + " - " + toTime);

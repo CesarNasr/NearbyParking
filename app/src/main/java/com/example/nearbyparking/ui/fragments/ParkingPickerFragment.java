@@ -1,7 +1,6 @@
 package com.example.nearbyparking.ui.fragments;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.nearbyparking.R;
 
@@ -26,7 +24,7 @@ public class ParkingPickerFragment extends Fragment {
     private static final String ARG_PARAM1 = "area";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
+    private String area;
     private DatabaseHelper databaseHelper;
     private RecyclerView parkingRecyclerView;
     private ParkingRecyclerViewAdapter adapter;
@@ -50,7 +48,7 @@ public class ParkingPickerFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
+            area = getArguments().getString(ARG_PARAM1);
         }
     }
 
@@ -63,6 +61,7 @@ public class ParkingPickerFragment extends Fragment {
         context = getContext();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(parkingRecyclerView.getContext(), linearLayoutManager.getOrientation());
+
         parkingRecyclerView.addItemDecoration(dividerItemDecoration);
         databaseHelper = new DatabaseHelper();
         parkingRecyclerView.setLayoutManager(linearLayoutManager);
@@ -70,7 +69,7 @@ public class ParkingPickerFragment extends Fragment {
         parkingRecyclerView.setAdapter(adapter);
 
 
-        new DatabaseHelper.GetParkingsByArea(mParam1, databaseHelper.getParkingDAO(), new DatabaseHelper.ParkingsDBListener() {
+        new DatabaseHelper.GetParkingsByArea(area, databaseHelper.getParkingDAO(), new DatabaseHelper.ParkingsDBListener() {
             @Override
             public void onSuccess(final List<Parking> parkings) {
                 parkingList = parkings;
