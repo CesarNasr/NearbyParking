@@ -84,6 +84,7 @@ public class RegisterActivity extends AppCompatActivity {
                 new DatabaseHelper.InsertOwner(parkingOwner, databaseHelper.getParkingDAO(), new DatabaseHelper.ParkingOwnerDBListener() {
                     @Override
                     public void onSuccess(Parking parkingOwner, long id) {
+                        parkingOwner.id = (int) id;
                         saveOwner(parkingOwner);
                         Gson gson = new Gson();
                         String usrString = gson.toJson(parkingOwner);
@@ -129,6 +130,8 @@ public class RegisterActivity extends AppCompatActivity {
                 new DatabaseHelper.InsertUser(carUser, databaseHelper.getCarUserDAO(), new DatabaseHelper.UserDBListener() {
                     @Override
                     public void onSuccess(CarUser user, long id) {
+
+                        user.id = (int) id;
                         saveUser(user);
 
                         Gson gson = new Gson();

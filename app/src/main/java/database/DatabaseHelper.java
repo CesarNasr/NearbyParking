@@ -62,6 +62,7 @@ public class DatabaseHelper {
             if (id == -1) {
                 userDBListener.onFailure();
             } else {
+
                 userDBListener.onSuccess(user, id);
             }
         }

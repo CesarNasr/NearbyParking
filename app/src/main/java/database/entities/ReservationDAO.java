@@ -17,13 +17,15 @@ import Helpers.Constants;
 @Dao
 public abstract class ReservationDAO {
 
-//        @Query("SELECT * FROM RESERVATION_TABLE WHERE user_id = :userId AND :parkingId = parking_id AND from_time BETWEEN :dayStart AND :dayEnd")
+    //        @Query("SELECT * FROM RESERVATION_TABLE WHERE user_id = :userId AND :parkingId = parking_id AND from_time BETWEEN :dayStart AND :dayEnd")
     //    public abstract List<Reservation> getReservationsPerDay(int parkingId, int userId, java.util.Date dayStart, java.util.Date dayEnd);
     @Query("SELECT * FROM RESERVATION_TABLE WHERE :parkingId = parking_id AND from_time BETWEEN :dayStart AND :dayEnd")
     public abstract List<Reservation> getReservationsPerDay(int parkingId, java.util.Date dayStart, java.util.Date dayEnd);
 
 
-    @Query("SELECT from_time, to_time, user_id, parking_id, id, rowid , count(*) AS countt FROM RESERVATION_TABLE WHERE :parkingId = parking_id AND from_time BETWEEN :dayStart AND :dayEnd GROUP BY from_time, to_time ")
+//    @Query("SELECT from_time, to_time, user_id, parking_id, id, rowid , count(*) AS countt FROM RESERVATION_TABLE WHERE :parkingId = parking_id AND from_time BETWEEN :dayStart AND :dayEnd GROUP BY from_time, to_time ")
+
+    @Query("SELECT * FROM RESERVATION_TABLE WHERE :parkingId = parking_id AND from_time BETWEEN :dayStart AND :dayEnd")
     public abstract List<Reservation> getReservationsPerParking(int parkingId, java.util.Date dayStart, java.util.Date dayEnd);
 
 
@@ -52,8 +54,6 @@ public abstract class ReservationDAO {
             java.sql.Date endDate = new java.sql.Date(endDay.getTime());
 
 
-
-
             List<Reservation> reservationList = getReservationsPerDay(parkingId, startDate, endDate);
 
             List<Long> reservationStartTimestampList = new ArrayList<>();
@@ -67,7 +67,8 @@ public abstract class ReservationDAO {
 
                 if (reservation != null) {
                     if (getNumberOfReservationsPer2Hours(reservationList, reservation) < parkingCapacity && !checkIfUserIdExistsInReservation(userId, reservationList, reservation)) {
-                        emptyReservations.add(reservation.fromTime.getTime());
+                        if (!emptyReservations.contains(reservation.fromTime.getTime()))
+                            emptyReservations.add(reservation.fromTime.getTime());
                     }
                 }
             }
@@ -93,8 +94,11 @@ public abstract class ReservationDAO {
     private int getNumberOfReservationsPer2Hours(List<Reservation> reservationList, Reservation reservation) {
         int reservationCount = 0;
         for (int i = 0; i < reservationList.size(); i++) {
-            if (reservationList.get(i).id == reservation.id)
+
+            if (reservationList.get(i).fromTime.getTime() == reservation.fromTime.getTime())
                 reservationCount++;
+
+//            if (reservationList.get(i).id == reservation.id)
         }
         return reservationCount;
     }

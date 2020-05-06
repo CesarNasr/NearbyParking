@@ -118,12 +118,14 @@ public class ReserveFragment extends Fragment {
                 new DatabaseHelper.InsertReservation(reservation, databaseHelper.getReservationDAO(), new DatabaseHelper.ReserveDBListener() {
                     @Override
                     public void onSuccess(Long inserted) {
-                        Toast.makeText(context, "Reservation Successful", Toast.LENGTH_LONG).show();
                         stringTimes.remove(selectedItemPosition);
                         timeStamps.remove(selectedItemPosition);
 
                         adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, stringTimes);
                         timeSpinner.setAdapter(adapter);
+
+                        Toast.makeText(context, "Reservation Successful", Toast.LENGTH_LONG).show();
+
                     }
 
                     @Override

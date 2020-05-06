@@ -70,7 +70,7 @@ public class ParkingOwnerHomeActivity extends AppCompatActivity {
         parkingName.setText(user.parkingName + "");
 
         calendarView = findViewById(R.id.calendar);
-        calendarView.setMaxDate(System.currentTimeMillis());
+//        calendarView.setMaxDate(System.currentTimeMillis());
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
@@ -157,7 +157,7 @@ public class ParkingOwnerHomeActivity extends AppCompatActivity {
             Long toTimeMillis = (Long) pair.getKey() + Constants.millisToAdd;
 
 
-            if (toTimeMillis < System.currentTimeMillis()) {
+//            if (toTimeMillis > System.currentTimeMillis()) {
 
 
                 String fromTime = formatter.format(new Date(fromTimeMillis));
@@ -170,7 +170,7 @@ public class ParkingOwnerHomeActivity extends AppCompatActivity {
                 text.setGravity(Gravity.CENTER);
                 linearLayout.addView(text);
 
-            }
+//            }
 //            System.out.println(pair.getKey() + " = " + pair.getValue());
 //            it.remove(); // avoids a ConcurrentModificationException
         }
