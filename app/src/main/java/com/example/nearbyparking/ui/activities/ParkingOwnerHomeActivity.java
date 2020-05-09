@@ -2,6 +2,8 @@ package com.example.nearbyparking.ui.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nearbyparking.R;
+import com.example.nearbyparking.ui.fragments.ViewReservationCalanderFragment;
 import com.google.gson.Gson;
 
 import java.sql.Date;
@@ -47,7 +50,14 @@ public class ParkingOwnerHomeActivity extends AppCompatActivity {
     private DatabaseHelper databaseHelper;
     LinearLayout linearLayout;
     private TextView parkingName;
+    private ImageView imageView;
     Map<Long, Integer> countMap;
+
+    void startDetailedReservationsActivity() {
+
+        Intent i = new Intent(context, DetailedReservationsAcitivity.class);
+        startActivity(i);
+    }
 
 
     @Override
@@ -56,6 +66,7 @@ public class ParkingOwnerHomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_parking_owner_home);
         context = this;
         linearLayout = findViewById(R.id.reservations_layout);
+        imageView = findViewById(R.id.more_details);
         databaseHelper = new DatabaseHelper();
         parkingName = findViewById(R.id.parkingName);
         getUser();
@@ -66,7 +77,12 @@ public class ParkingOwnerHomeActivity extends AppCompatActivity {
                 logout();
             }
         });
-
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startDetailedReservationsActivity();
+            }
+        });
         parkingName.setText(user.parkingName + "");
 
         calendarView = findViewById(R.id.calendar);
@@ -77,14 +93,11 @@ public class ParkingOwnerHomeActivity extends AppCompatActivity {
                 GregorianCalendar cal = new GregorianCalendar(year, month, dayOfMonth);
                 long millis = cal.getTimeInMillis();
                 getReservations(user.id, millis);
-
             }
         });
 
-
 // get reservations on same day when fragment start
         getReservations(user.id, System.currentTimeMillis());
-
     }
 
 
@@ -122,7 +135,7 @@ public class ParkingOwnerHomeActivity extends AppCompatActivity {
     }
 
 
-    private Map<Long, Integer> groupReservations(List<Reservation> reservations, Long date) {
+    private Map<Long, Integer> groupReservations(List<Reservation> reservations) {
 
         countMap = new HashMap<>();
 
@@ -142,7 +155,7 @@ public class ParkingOwnerHomeActivity extends AppCompatActivity {
 
     private void updateReservationsUI(List<Reservation> reservations, Long date) {
 
-        groupReservations(reservations, date);
+        groupReservations(reservations);
 
 
         SimpleDateFormat formatter = new SimpleDateFormat("hh:mm a");
@@ -160,15 +173,15 @@ public class ParkingOwnerHomeActivity extends AppCompatActivity {
 //            if (toTimeMillis > System.currentTimeMillis()) {
 
 
-                String fromTime = formatter.format(new Date(fromTimeMillis));
-                String toTime = formatter.format(new Date(toTimeMillis));
+            String fromTime = formatter.format(new Date(fromTimeMillis));
+            String toTime = formatter.format(new Date(toTimeMillis));
 
 
-                TextView text = new TextView(context);
-                text.setText(fromTime + " - " + toTime + " : " + pair.getValue());
-                text.setTextSize(20);
-                text.setGravity(Gravity.CENTER);
-                linearLayout.addView(text);
+            TextView text = new TextView(context);
+            text.setText(fromTime + " - " + toTime + " : " + pair.getValue() + " Slot(s)");
+            text.setTextSize(20);
+            text.setGravity(Gravity.CENTER);
+            linearLayout.addView(text);
 
 //            }
 //            System.out.println(pair.getKey() + " = " + pair.getValue());

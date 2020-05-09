@@ -10,6 +10,7 @@ import com.example.nearbyparking.ui.fragments.ContactUs;
 import com.example.nearbyparking.ui.fragments.LicenseAgreementFrag;
 import com.example.nearbyparking.ui.fragments.MyMapFragment;
 import com.example.nearbyparking.ui.fragments.ReserveFragment;
+import com.example.nearbyparking.ui.fragments.ViewReservationCalanderFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -32,6 +33,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.Menu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import Helpers.Utilities;
@@ -43,11 +45,13 @@ import static Helpers.Utilities.PREF_USER_TYPE_KEY;
 public class UserHomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    int visibleFragmentNb; // used to know which fragment is visible now
-    Boolean isOwner;
+    private int visibleFragmentNb; // used to know which fragment is visible now
+    private Boolean isOwner;
     public CarUser user = null;
-    Context context;
-    Gson gson = new Gson();
+    private Context context;
+    private Gson gson = new Gson();
+    private NavigationView navigationView;
+    private TextView textName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +61,7 @@ public class UserHomeActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         context = this;
         getUser();
+        navigationView = findViewById(R.id.nav_view);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -66,7 +71,10 @@ public class UserHomeActivity extends AppCompatActivity
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
+        View header = navigationView.getHeaderView(0);
 
+        textName =  header.findViewById(R.id.username_text);
+        textName.setText("WELCOME, " + user.userName);
         startMapsFragment();
 
     }
@@ -76,7 +84,7 @@ public class UserHomeActivity extends AppCompatActivity
         String userString = intent.getExtras().getString("user");
         isOwner = Utilities.getBooleanFromSharedPrefs(PREF_USER_TYPE_KEY, context);
         user = gson.fromJson(userString, CarUser.class);
-        Toast.makeText(context, "Welcome " + user.userName, Toast.LENGTH_LONG).show();
+//        Toast.makeText(context, "Welcome " + user.userName, Toast.LENGTH_LONG).show();
     }
 
     void startMapsFragment() {
@@ -96,6 +104,16 @@ public class UserHomeActivity extends AppCompatActivity
             ft.replace(R.id.mainFrame, fragment);
             ft.commit();
             visibleFragmentNb = 4;
+        }
+    }
+
+    void startMyReservationsFragment() {
+        Fragment fragment = new ViewReservationCalanderFragment();
+        if (visibleFragmentNb != 5) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.mainFrame, fragment);
+            ft.commit();
+            visibleFragmentNb = 5;
         }
     }
 
@@ -154,6 +172,8 @@ public class UserHomeActivity extends AppCompatActivity
             logout();
         } else if (id == R.id.nav_reserve) {
             startReserveFragment();
+        } else if (id == R.id.nav_my_reservations) {
+            startMyReservationsFragment();
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

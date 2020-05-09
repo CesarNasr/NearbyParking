@@ -141,12 +141,14 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
+
                 android:background="@drawable/edittext_shape"
                 android:hint="   Name"
                 android:inputType="textPersonName"
                 android:textSize="13dp" />
 
             <EditText
+
                 android:id="@+id/phone"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

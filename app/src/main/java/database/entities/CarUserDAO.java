@@ -12,8 +12,10 @@ public abstract class CarUserDAO {
     public abstract long insert(CarUser user);
 
     @Query("SELECT * FROM car_user WHERE user_name = :userName")
-    public abstract CarUser selectUser(String userName);
+    public abstract CarUser selectUserByUsername(String userName);
 
+    @Query("SELECT * FROM car_user WHERE id = :id")
+    public abstract CarUser selectUserById(int id);
 
     @Query("SELECT * FROM car_user WHERE user_name = :userName AND password = :password")
     public abstract CarUser loginUser(String userName, String password);
@@ -22,7 +24,7 @@ public abstract class CarUserDAO {
     @Transaction
     public long insertUser(CarUser carUser) {
 
-            if (selectUser(carUser.userName) != null) {
+            if (selectUserByUsername(carUser.userName) != null) {
             return -1;
         }else {
            return insert(carUser);

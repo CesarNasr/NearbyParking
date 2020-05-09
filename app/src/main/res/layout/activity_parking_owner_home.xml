@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
+
+
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -49,22 +53,35 @@
             android:layout_marginTop="85dp"
             android:src="@drawable/shape_oval" />
 
+        <ImageView
+            android:id="@+id/more_details"
+
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/image_oval"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="5dp"
+            android:src="@drawable/ic_arrows"
+
+            />
 
         <CalendarView
             android:id="@+id/calendar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/image_oval"
-            android:layout_margin="20dp" />
+            android:layout_below="@+id/more_details"
+            android:layout_centerInParent="true"
+            android:layout_margin="15dp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Reservation Time : Reservation Count"
-            android:textSize="20dp"
-            android:layout_centerHorizontal="true"
-            android:gravity="center_horizontal"
             android:layout_above="@id/reservations_layout"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="5dp"
+            android:gravity="center_horizontal"
+            android:text=" Time :  Count"
+            android:textSize="20dp"
             android:textStyle="bold" />
 
         <LinearLayout
@@ -72,8 +89,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/calendar"
-            android:gravity="center"
             android:layout_centerHorizontal="true"
+            android:gravity="center"
             android:orientation="vertical" />
 
 

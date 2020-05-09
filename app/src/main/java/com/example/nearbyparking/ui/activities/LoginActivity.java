@@ -58,8 +58,18 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+  private  boolean checkIfEditTextEmpty() {
+        if (username.getText().toString().isEmpty() || password.getText().toString().isEmpty()) {
+            Toast.makeText(context, "Please fill all empty fields ", Toast.LENGTH_LONG).show();
+            return true;
+        } else
+            return false;
+    }
 
     void onLoginPressed() {
+        if (checkIfEditTextEmpty())
+            return;
+
         if (isOwner) {
             new DatabaseHelper.LoginParkingOwner(username.getText().toString(), password.getText().toString(), databaseHelper.getParkingDAO(), new DatabaseHelper.ParkingOwnerDBListener() {
                 @Override
@@ -70,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                     Gson gson = new Gson();
                     String usrString = gson.toJson(parkingOwner);
                     Intent i = new Intent(context, ParkingOwnerHomeActivity.class);
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     i.putExtra("user", usrString);
                     startActivity(i);
                 }
@@ -98,7 +108,7 @@ public class LoginActivity extends AppCompatActivity {
                     String usrString = gson.toJson(user);
 
                     Intent i = new Intent(context, UserHomeActivity.class);
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     i.putExtra("user", usrString);
                     startActivity(i);
 

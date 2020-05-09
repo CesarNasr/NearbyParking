@@ -16,11 +16,40 @@
         android:orientation="vertical">
 
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="  Few spaces Left below, \nget yours reserved now !! "
+                android:textColor="@color/lightBlue"
+                android:textSize="20dp"
+                android:textStyle="italic" />
+
+            <ImageView
+                android:layout_width="50sp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_margin="7dp"
+                android:src="@drawable/ic_book" />
+
+        </LinearLayout>
+
+
         <CalendarView
             android:id="@+id/calendar"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_margin="20dp" />
+            android:layout_margin="15dp" />
+
+
         <Spinner
             android:id="@+id/times_spinner"
             android:layout_width="wrap_content"
@@ -36,6 +65,7 @@
             android:layout_marginLeft="40dp"
             android:layout_marginTop="20dp"
             android:layout_marginRight="40dp"
+            android:layout_marginBottom="5dp"
             android:background="@drawable/shape_bg_rounded"
             android:text="Confirm Reservation"
             android:textAllCaps="false"

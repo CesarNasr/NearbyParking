@@ -81,7 +81,6 @@ public class ReserveFragment extends Fragment {
         parking = gson.fromJson(mParam1, Parking.class);
 
 
-
         reserve = view.findViewById(R.id.btn_reserve);
 
         // get time from database
@@ -104,7 +103,14 @@ public class ReserveFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                if (timeSpinner.getSelectedItem() == null) {
+                    Toast.makeText(context, "Oops! You missed your place for this day !", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+
                 final int selectedItemPosition = timeSpinner.getSelectedItemPosition();
+
                 Reservation reservation = new Reservation();
                 reservation.parkingId = parking.id;
                 reservation.userId = carUser.id;

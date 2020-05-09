@@ -41,7 +41,7 @@ public class ParkingRecyclerViewAdapter extends RecyclerView.Adapter<ParkingRecy
         String name = parkingList.get(position).parkingName;
         String cap = String.valueOf(parkingList.get(position).capacity);
         holder.parkingName.setText(name);
-        holder.parkingCapacity.setText("Capacity: " + cap);
+        holder.parkingCapacity.setText("Capacity / Session: " + cap);
 
     }
 

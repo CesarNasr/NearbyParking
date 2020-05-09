@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.example.nearbyparking.R;
 
@@ -30,6 +31,7 @@ public class ParkingPickerFragment extends Fragment {
     private ParkingRecyclerViewAdapter adapter;
     private Context context;
     private List<Parking> parkingList;
+    private ImageView emptyPlaceholder;
 
     public ParkingPickerFragment() {
         // Required empty public constructor
@@ -58,6 +60,7 @@ public class ParkingPickerFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_parking_picker, container, false);
         parkingRecyclerView = view.findViewById(R.id.rvParkings);
+        emptyPlaceholder = view.findViewById(R.id.no_parking_placeholder);
         context = getContext();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(parkingRecyclerView.getContext(), linearLayoutManager.getOrientation());
@@ -72,9 +75,12 @@ public class ParkingPickerFragment extends Fragment {
         new DatabaseHelper.GetParkingsByArea(area, databaseHelper.getParkingDAO(), new DatabaseHelper.ParkingsDBListener() {
             @Override
             public void onSuccess(final List<Parking> parkings) {
+
+                if (parkings.size() == 0)
+                    emptyPlaceholder.setVisibility(View.VISIBLE);
+
                 parkingList = parkings;
                 adapter.setList(parkings);
-
             }
 
             @Override

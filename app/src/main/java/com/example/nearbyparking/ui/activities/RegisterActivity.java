@@ -27,7 +27,7 @@ import static Helpers.Utilities.PREF_USER_TYPE_KEY;
 public class RegisterActivity extends AppCompatActivity {
     private boolean isOwner;
     private Context context;
-    private EditText parkingName, parkingPassword, parkingUserName, parkingCapacity, parkingAdress, userUsername, userPassword, carPlateNumber, carDescription;
+    private EditText parkingName, parkingPassword, parkingUserName, parkingCapacity, parkingAdress, userUsername, userPassword, carPlateNumber, carDescription, confirmUserPass, confirmOwnerPass;
     private LinearLayout parkingLayout, userLayout;
     private Spinner ownerSpinner;
     private Button registerUser, registerOwner;
@@ -63,7 +63,7 @@ public class RegisterActivity extends AppCompatActivity {
         ownerSpinner = findViewById(R.id.parkingOwnerSpinner);
         registerOwner = findViewById(R.id.registerOwnerBtn);
         parkingCapacity = findViewById(R.id.parkingCapacity);
-
+        confirmOwnerPass = findViewById(R.id.parkinConfirmPassword);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, Constants.areas);
         ownerSpinner.setAdapter(adapter);
 
@@ -71,7 +71,9 @@ public class RegisterActivity extends AppCompatActivity {
         registerOwner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (checkIfEditTextEmpty()) {
+                    return;
+                }
                 final Parking parkingOwner = new Parking();
 
                 parkingOwner.areaName = ownerSpinner.getSelectedItem().toString();
@@ -105,8 +107,36 @@ public class RegisterActivity extends AppCompatActivity {
 
             }
         });
+    }
 
-//        dropdown.getSelectedItem();
+
+    private boolean checkIfEditTextEmpty() {
+
+        if (isOwner) {
+            if (parkingName.getText().toString().isEmpty() || parkingPassword.getText().toString().isEmpty()
+                    || parkingUserName.getText().toString().isEmpty() || parkingAdress.getText().toString().isEmpty()
+                    || parkingCapacity.getText().toString().isEmpty() || confirmOwnerPass.getText().toString().isEmpty()) {
+                Toast.makeText(context, "Please fill all empty fields ", Toast.LENGTH_LONG).show();
+                return true;
+            } else if (!parkingPassword.getText().toString().equals(confirmOwnerPass.getText().toString())) {
+                Toast.makeText(context, "Passwords don't match", Toast.LENGTH_LONG).show();
+                return true;
+            } else
+                return false;
+
+        } else {
+            if (userUsername.getText().toString().isEmpty() || userPassword.getText().toString().isEmpty()
+                    || carPlateNumber.getText().toString().isEmpty() || carDescription.getText().toString().isEmpty() || confirmUserPass.getText().toString().isEmpty()) {
+                Toast.makeText(context, "Please fill all empty fields ", Toast.LENGTH_LONG).show();
+                return true;
+            } else if (!userPassword.getText().toString().equals(confirmUserPass.getText().toString())) {
+                Toast.makeText(context, "Passwords don't match", Toast.LENGTH_LONG).show();
+                return true;
+            } else
+                return false;
+        }
+
+
     }
 
     private void setupUserView() {
@@ -115,11 +145,16 @@ public class RegisterActivity extends AppCompatActivity {
         carDescription = findViewById(R.id.carDescription);
         carPlateNumber = findViewById(R.id.carPlatenumber);
         registerUser = findViewById(R.id.registerUserBtn);
+        confirmUserPass = findViewById(R.id.userConfirmPassword);
 
 
         registerUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (checkIfEditTextEmpty()) {
+                    return;
+                }
 
                 final CarUser carUser = new CarUser();
                 carUser.userName = userUsername.getText().toString();

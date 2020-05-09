@@ -20,22 +20,18 @@ public class Reservation {
     @ColumnInfo(name = "user_id")
     public int userId;
 
-    //    @TypeConverters({Converters.class})
     @ColumnInfo(name = "from_time")
     public Date fromTime;
 
-//    public String fromTimeStamp;
-
-//    val joined_date: OffsetDateTime? = null
-
-
-    //    @TypeConverters({Converters.class})
     @ColumnInfo(name = "to_time")
     public Date toTime;
 
 
+    @Ignore
+    public CarUser carUser;
+
+    @Ignore
+    public Parking parkingOwner;
 
 
-
-//    public String toTimeStamp;
 }

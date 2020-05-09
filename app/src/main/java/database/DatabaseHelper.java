@@ -271,7 +271,7 @@ public class DatabaseHelper {
 
         @Override
         protected List<Reservation> doInBackground(Void... Avoid) {
-            List<Reservation> list = reservationDAO.getReservationsPerParking(parkingId, startDate, endDate);
+            List<Reservation> list = reservationDAO.getReservationsByParkingIdWithCorrespondingUser(parkingId, startDate, endDate);
 //            List<Reservation> availableReservations = new ArrayList<>();
 
             return list;
@@ -289,6 +289,46 @@ public class DatabaseHelper {
         }
     }
 
+
+
+
+
+
+
+
+    public static class GetReservationPerUser extends AsyncTask<Void, Void, List<Reservation>> { // TODO getAvailableSlots change it all
+        private ReservationDAO reservationDAO;
+        private int userId;
+        private java.sql.Date endDate, startDate;
+
+        private ReservationsPerParkingDBListener reservationsPerParkingDBListener;
+
+        public GetReservationPerUser(int userId, java.sql.Date startDate, java.sql.Date endDate, ReservationDAO reservationDAO, ReservationsPerParkingDBListener reservationsPerParkingDBListener) {
+            this.reservationDAO = reservationDAO;
+            this.userId = userId;
+            this.endDate = endDate;
+            this.startDate = startDate;
+            this.reservationsPerParkingDBListener = reservationsPerParkingDBListener;
+        }
+
+        @Override
+        protected List<Reservation> doInBackground(Void... Avoid) {
+            List<Reservation> list = reservationDAO.getReservationsByUserIdWithCorrespondingUser(userId, startDate, endDate);
+
+            return list;
+        }
+
+        @Override
+        protected void onPostExecute(List<Reservation> reservations) {
+            super.onPostExecute(reservations);
+
+            if (reservations == null) {
+                reservationsPerParkingDBListener.onFailure();
+            } else {
+                reservationsPerParkingDBListener.onSuccess(reservations);
+            }
+        }
+    }
 
     public interface UserDBListener {
         void onSuccess(CarUser user, long id);

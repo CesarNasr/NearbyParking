@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Helpers.Constants;
+import database.DatabaseHelper;
 
 
 @Dao
@@ -29,11 +30,48 @@ public abstract class ReservationDAO {
     public abstract List<Reservation> getReservationsPerParking(int parkingId, java.util.Date dayStart, java.util.Date dayEnd);
 
 
+    @Query("SELECT * FROM RESERVATION_TABLE WHERE :userId = user_id AND from_time BETWEEN :dayStart AND :dayEnd")
+    public abstract List<Reservation> getReservationsPerUserId(int userId, java.util.Date dayStart, java.util.Date dayEnd);
+
+
     @Insert
     public abstract long insertReservation(Reservation reservation);
 
 
-    //
+    @Transaction
+
+    public List<Reservation> getReservationsByUserIdWithCorrespondingUser(int userId, java.util.Date dayStart, java.util.Date dayEnd) {
+        DatabaseHelper databaseHelper = new DatabaseHelper();
+
+        List<Reservation> reservationList = getReservationsPerUserId(userId, dayStart, dayEnd);
+
+        for (int i = 0; i < reservationList.size(); i++) {
+            reservationList.get(i).carUser = databaseHelper.getCarUserDAO().selectUserById(userId);
+            reservationList.get(i).parkingOwner = databaseHelper.getParkingDAO().selectParkingById(reservationList.get(i).parkingId);
+        }
+
+
+        return reservationList;
+
+    }
+
+    public List<Reservation> getReservationsByParkingIdWithCorrespondingUser(int parkingId, java.util.Date dayStart, java.util.Date dayEnd) {
+        DatabaseHelper databaseHelper = new DatabaseHelper();
+
+        List<Reservation> reservationList = getReservationsPerParking(parkingId, dayStart, dayEnd);
+
+        for (int i = 0; i < reservationList.size(); i++) {
+            reservationList.get(i).carUser = databaseHelper.getCarUserDAO().selectUserById(reservationList.get(i).userId);
+            reservationList.get(i).parkingOwner = databaseHelper.getParkingDAO().selectParkingById(reservationList.get(i).parkingId);
+        }
+
+
+        return reservationList;
+
+    }
+
+
+
     @Transaction
     public List<Long> getAvailableSlots(int parkingId, int parkingCapacity, int userId, Long date) {
 

@@ -16,6 +16,8 @@ public abstract class ParkingDAO {
     @Query("SELECT * FROM parking_table WHERE user_name = :userName")
     public abstract Parking selectParkingByUsername(String userName);
 
+    @Query("SELECT * FROM parking_table WHERE id = :id")
+    public abstract Parking selectParkingById(int id);
     @Query("SELECT * FROM parking_table WHERE area_name LIKE :area")
     public abstract List<Parking> selectParkingByArea(String area);
 

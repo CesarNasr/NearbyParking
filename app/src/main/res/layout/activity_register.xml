@@ -73,6 +73,7 @@
                         android:id="@+id/username"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:inputType="text"
 
                         android:hint="Ex: BeirutPark01" />
 
@@ -101,6 +102,15 @@
                         android:hint="Password"
                         android:inputType="textPassword" />
 
+                    <EditText
+                        android:id="@+id/parkinConfirmPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:ellipsize="start"
+                        android:hint="Confirm Password"
+                        android:inputType="textPassword" />
+
                 </LinearLayout>
 
 
@@ -120,6 +130,7 @@
                     <EditText
                         android:id="@+id/parkingName"
                         android:layout_width="match_parent"
+                        android:inputType="text"
                         android:layout_height="wrap_content"
                         android:hint="Ex: Lot 128" />
 
@@ -145,6 +156,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Ex: 30"
+
                         android:inputType="number" />
 
                 </LinearLayout>
@@ -189,7 +201,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Full Address"
-                        android:inputType="textCapSentences|textMultiLine"
+                        android:inputType="text|textCapSentences|textMultiLine"
                         android:maxLength="2000"
                         android:maxLines="4" />
 
@@ -237,7 +249,7 @@
                         android:id="@+id/username_user"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Ex: BeirutPark01" />
+                        android:hint="Ex: EmilyJ" />
 
                 </LinearLayout>
 
@@ -263,6 +275,14 @@
                         android:hint="Password"
                         android:inputType="textPassword" />
 
+                    <EditText
+                        android:id="@+id/userConfirmPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="start"
+                        android:hint="Confirm Password"
+                        android:inputType="textPassword" />
+
                 </LinearLayout>
 
 
@@ -282,6 +302,8 @@
                     <EditText
                         android:id="@+id/carPlatenumber"
                         android:layout_width="match_parent"
+                        android:inputType="text"
+
                         android:layout_height="wrap_content"
                         android:hint="A817266" />
 
@@ -303,6 +325,8 @@
                     <EditText
                         android:id="@+id/carDescription"
                         android:layout_width="match_parent"
+                        android:inputType="text"
+
                         android:layout_height="wrap_content"
                         android:hint="Hyudai i10" />
                 </LinearLayout>
