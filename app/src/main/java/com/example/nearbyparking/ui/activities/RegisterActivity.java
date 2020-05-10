@@ -134,6 +134,7 @@ public class RegisterActivity extends AppCompatActivity {
                 return true;
             } else
                 return false;
+            //
         }
 
 
