@@ -62,11 +62,11 @@ public class ViewReservationCalanderFragment extends Fragment {
         DialogFragment newFragment = null;
         if (isOwner) {
             parking = (Parking) Utilities.getCurrentUserFromSharedPrefs(isOwner, context);
-            newFragment = ViewReservationsDialogFragment.newInstance(isOwner, parking, millis);
+            newFragment = ViewReservationsDialogFragment.newInstance(null,isOwner, parking, millis);
 
         } else {
             user = (CarUser) Utilities.getCurrentUserFromSharedPrefs(isOwner, context);
-            newFragment = ViewReservationsDialogFragment.newInstance(isOwner, user, millis);
+            newFragment = ViewReservationsDialogFragment.newInstance(null,isOwner, user, millis);
 
         }
 

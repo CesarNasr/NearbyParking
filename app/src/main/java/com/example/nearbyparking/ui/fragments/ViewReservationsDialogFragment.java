@@ -39,18 +39,21 @@ public class ViewReservationsDialogFragment extends DialogFragment {
     private static final String USER_TYPE = "type";
     private static final String USER_OBJECT = "object";
     private static final String TIME_MILLIS = "millis";
+
+    private static final String EXACT_TIME_MILLIS = "exact_time_millis";
+
     private Long timeMillis;
     private DatabaseHelper databaseHelper;
     private Context context;
     // TODO: Rename and change types of parameters
-
+    Long hourMillis = null;
 
     public ViewReservationsDialogFragment() {
         // Required empty public constructor
     }
 
 
-    public static ViewReservationsDialogFragment newInstance(Boolean type, Object obj, Long millis) {
+    public static ViewReservationsDialogFragment newInstance(Long hourMillis, Boolean type, Object obj, Long millis) {
         ViewReservationsDialogFragment fragment = new ViewReservationsDialogFragment();
         Bundle args = new Bundle();
         Gson gson = new Gson();
@@ -65,8 +68,12 @@ public class ViewReservationsDialogFragment extends DialogFragment {
         }
 
         args.putBoolean(USER_TYPE, type);
+
         args.putString(USER_OBJECT, usrString);
+        if(millis != null)
         args.putLong(TIME_MILLIS, millis);
+        if(hourMillis != null)
+        args.putLong(EXACT_TIME_MILLIS, hourMillis);
 
         fragment.setArguments(args);
         return fragment;
@@ -83,12 +90,16 @@ public class ViewReservationsDialogFragment extends DialogFragment {
             isOwner = getArguments().getBoolean(USER_TYPE);
             timeMillis = getArguments().getLong(TIME_MILLIS);
             String usrObj = getArguments().getString(USER_OBJECT);
+            hourMillis = getArguments().getLong(EXACT_TIME_MILLIS);
+
 
             if (isOwner) {
                 parkingOwner = gson.fromJson(usrObj, Parking.class);
             } else {
                 user = gson.fromJson(usrObj, CarUser.class);
             }
+
+
         }
     }
 
@@ -109,8 +120,49 @@ public class ViewReservationsDialogFragment extends DialogFragment {
 
         reservationsRecyclerview.setAdapter(rViewAdapter);
 
-        getResults();
+        if (hourMillis != null || hourMillis != 0) {
+            getReservations(parkingOwner.id, hourMillis);
+        } else {
+            getResults();
+        }
+//        getResults();
         return view;
+    }
+
+
+    private void getReservations(int parkingId, final Long date) {
+
+//        SimpleDateFormat formatterDate = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat formatterDateTime = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+        String dateString = formatterDateTime.format(new Date(date));
+
+        java.util.Date startDay = null;
+        try {
+            startDay = formatterDateTime.parse(dateString);
+
+//            java.util.Date endDay = formatterDateTime.parse(dateString + " 23:59:59");
+            java.sql.Date startDate = new java.sql.Date(startDay.getTime());
+//            java.sql.Date endDate = new java.sql.Date(endDay.getTime());
+
+
+            new DatabaseHelper.GetReservedByParkingAndStartTimer(parkingId, startDate, databaseHelper.getReservationDAO(), new DatabaseHelper.ReservationsPerParkingDBListener() {
+                @Override
+                public void onSuccess(List<Reservation> reservations) {
+                    rViewAdapter.setList(reservations, isOwner);
+                    if (reservations.size() == 0)
+                        noResults.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onFailure() {
+                    Toast.makeText(context, "Something went wrong", Toast.LENGTH_LONG).show();
+                }
+            }).execute();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
 

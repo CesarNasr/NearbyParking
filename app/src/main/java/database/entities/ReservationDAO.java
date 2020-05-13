@@ -3,6 +3,7 @@ package database.entities;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.RoomWarnings;
 import androidx.room.Transaction;
 
 import java.sql.Date;
@@ -29,6 +30,12 @@ public abstract class ReservationDAO {
     @Query("SELECT * FROM RESERVATION_TABLE WHERE :parkingId = parking_id AND from_time BETWEEN :dayStart AND :dayEnd")
     public abstract List<Reservation> getReservationsPerParking(int parkingId, java.util.Date dayStart, java.util.Date dayEnd);
 
+//    @Query("SELECT reservation_table.*, car_user.*  FROM RESERVATION_TABLE LEFT JOIN car_user ON RESERVATION_TABLE.user_id = car_user.id WHERE :parkingId = parking_id AND from_time == :dayStart")
+//    public abstract List<Reservation> getReservationsPerParkingByStartTime(int parkingId, java.util.Date dayStart);
+
+    @Query("SELECT *  FROM RESERVATION_TABLE WHERE :parkingId = parking_id AND from_time == :dayStart")
+    public abstract List<Reservation> getReservationsPerParkingByStartTime(int parkingId, java.util.Date dayStart);
+
 
     @Query("SELECT * FROM RESERVATION_TABLE WHERE :userId = user_id AND from_time BETWEEN :dayStart AND :dayEnd")
     public abstract List<Reservation> getReservationsPerUserId(int userId, java.util.Date dayStart, java.util.Date dayEnd);
@@ -54,6 +61,9 @@ public abstract class ReservationDAO {
         return reservationList;
 
     }
+    @Transaction
+
+
 
     public List<Reservation> getReservationsByParkingIdWithCorrespondingUser(int parkingId, java.util.Date dayStart, java.util.Date dayEnd) {
         DatabaseHelper databaseHelper = new DatabaseHelper();
@@ -69,7 +79,20 @@ public abstract class ReservationDAO {
         return reservationList;
 
     }
+    public List<Reservation> getReservationsByParkingIdAndTimeWithCorrespondingUser(int parkingId, java.util.Date dayStart) {
+        DatabaseHelper databaseHelper = new DatabaseHelper();
 
+        List<Reservation> reservationList = getReservationsPerParkingByStartTime(parkingId, dayStart);
+
+        for (int i = 0; i < reservationList.size(); i++) {
+            reservationList.get(i).carUser = databaseHelper.getCarUserDAO().selectUserById(reservationList.get(i).userId);
+            reservationList.get(i).parkingOwner = databaseHelper.getParkingDAO().selectParkingById(reservationList.get(i).parkingId);
+        }
+
+
+        return reservationList;
+
+    }
 
 
     @Transaction

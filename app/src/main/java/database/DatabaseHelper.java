@@ -272,6 +272,42 @@ public class DatabaseHelper {
         @Override
         protected List<Reservation> doInBackground(Void... Avoid) {
             List<Reservation> list = reservationDAO.getReservationsByParkingIdWithCorrespondingUser(parkingId, startDate, endDate);
+//            List<Reservation> availableReservations = new ArrayList<>();mix -
+            return list;
+        }
+
+        @Override
+        protected void onPostExecute(List<Reservation> reservations) {
+            super.onPostExecute(reservations);
+
+            if (reservations == null) {
+                reservationsPerParkingDBListener.onFailure();
+            } else {
+                reservationsPerParkingDBListener.onSuccess(reservations);
+            }
+        }
+    }
+
+
+
+    public static class GetReservedByParkingAndStartTimer extends AsyncTask<Void, Void, List<Reservation>> { // TODO getAvailableSlots change it all
+        private ReservationDAO reservationDAO;
+        private int parkingId, parkingCapacity;
+        private java.sql.Date  startDate;
+
+        private ReservationsPerParkingDBListener reservationsPerParkingDBListener;
+
+        public GetReservedByParkingAndStartTimer(int parkingId, java.sql.Date startDate,  ReservationDAO reservationDAO, ReservationsPerParkingDBListener reservationsPerParkingDBListener) {
+            this.reservationDAO = reservationDAO;
+            this.parkingId = parkingId;
+//            this.endDate = endDate;
+            this.startDate = startDate;
+            this.reservationsPerParkingDBListener = reservationsPerParkingDBListener;
+        }
+
+        @Override
+        protected List<Reservation> doInBackground(Void... Avoid) {
+            List<Reservation> list = reservationDAO.getReservationsByParkingIdAndTimeWithCorrespondingUser(parkingId, startDate);
 //            List<Reservation> availableReservations = new ArrayList<>();
 
             return list;
