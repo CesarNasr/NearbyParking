@@ -39,9 +39,9 @@ public class ParkingRecyclerViewAdapter extends RecyclerView.Adapter<ParkingRecy
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         String name = parkingList.get(position).parkingName;
-        String cap = String.valueOf(parkingList.get(position).capacity);
+        String area = String.valueOf(parkingList.get(position).areaName);
         holder.parkingName.setText(name);
-        holder.parkingCapacity.setText("Capacity / Session: " + cap);
+//        holder.parkingCapacity.setText(area);
 
     }
 

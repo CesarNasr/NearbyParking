@@ -104,6 +104,15 @@ public class ViewReservationsDialogFragment extends DialogFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();
+        params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        params.height = ViewGroup.LayoutParams.MATCH_PARENT;
+        getDialog().getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_view_reservations, container, false);
         // Inflate the layout for this fragment
@@ -120,7 +129,7 @@ public class ViewReservationsDialogFragment extends DialogFragment {
 
         reservationsRecyclerview.setAdapter(rViewAdapter);
 
-        if (hourMillis != null || hourMillis != 0) {
+        if (hourMillis != null && hourMillis != 0) {
             getReservations(parkingOwner.id, hourMillis);
         } else {
             getResults();

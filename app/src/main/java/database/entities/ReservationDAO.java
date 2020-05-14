@@ -1,9 +1,10 @@
 package database.entities;
 
+import android.os.Build;
+
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
-import androidx.room.RoomWarnings;
 import androidx.room.Transaction;
 
 import java.sql.Date;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import Helpers.Constants;
 import database.DatabaseHelper;
+import models.TimeReservationModel;
 
 
 @Dao
@@ -61,8 +63,8 @@ public abstract class ReservationDAO {
         return reservationList;
 
     }
-    @Transaction
 
+    @Transaction
 
 
     public List<Reservation> getReservationsByParkingIdWithCorrespondingUser(int parkingId, java.util.Date dayStart, java.util.Date dayEnd) {
@@ -79,6 +81,7 @@ public abstract class ReservationDAO {
         return reservationList;
 
     }
+
     public List<Reservation> getReservationsByParkingIdAndTimeWithCorrespondingUser(int parkingId, java.util.Date dayStart) {
         DatabaseHelper databaseHelper = new DatabaseHelper();
 
@@ -96,10 +99,10 @@ public abstract class ReservationDAO {
 
 
     @Transaction
-    public List<Long> getAvailableSlots(int parkingId, int parkingCapacity, int userId, Long date) {
+    public List<TimeReservationModel> getAvailableSlots(int parkingId, int parkingCapacity, int userId, Long date) {
 
 
-        List<Long> emptyReservations = new ArrayList<>();
+        List<TimeReservationModel> emptyReservations = new ArrayList<>();
 
         SimpleDateFormat formatterDate = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat formatterDateTime = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
@@ -111,8 +114,8 @@ public abstract class ReservationDAO {
             java.util.Date startDay = formatterDateTime.parse(dateString + " 00:00:00.0");
             java.util.Date endDay = formatterDateTime.parse(dateString + " 23:59:59");
 
-            java.sql.Date startDate = new java.sql.Date(startDay.getTime());
-            java.sql.Date endDate = new java.sql.Date(endDay.getTime());
+            Date startDate = new Date(startDay.getTime());
+            Date endDate = new Date(endDay.getTime());
 
 
             List<Reservation> reservationList = getReservationsPerDay(parkingId, startDate, endDate);
@@ -127,9 +130,18 @@ public abstract class ReservationDAO {
                 Reservation reservation = reservationList.get(j);
 
                 if (reservation != null) {
+
+                    TimeReservationModel timeReservationModel;
                     if (getNumberOfReservationsPer2Hours(reservationList, reservation) < parkingCapacity && !checkIfUserIdExistsInReservation(userId, reservationList, reservation)) {
-                        if (!emptyReservations.contains(reservation.fromTime.getTime()))
-                            emptyReservations.add(reservation.fromTime.getTime());
+
+                        timeReservationModel = new TimeReservationModel(reservation.fromTime.getTime(), true);
+
+                        if (!emptyReservations.contains(timeReservationModel)) { //TODO check for problem/error!!!!
+                            emptyReservations.add(timeReservationModel);
+                        }
+                    } else {
+                        timeReservationModel = new TimeReservationModel(reservation.fromTime.getTime(), false);
+                        emptyReservations.add(timeReservationModel);
                     }
                 }
             }
@@ -137,14 +149,19 @@ public abstract class ReservationDAO {
 
             Long dateInMs = startDate.getTime();
             for (int i = 0; i < 12; i++) {
-                if (!reservationStartTimestampList.contains(dateInMs)) {
-                    emptyReservations.add(dateInMs);
+
+                TimeReservationModel timeReservationModel = new TimeReservationModel(dateInMs, true);
+
+                if (!reservationStartTimestampList.contains(timeReservationModel.getStartTime())) { //TODO check for problem/error!!!!
+                    emptyReservations.add(timeReservationModel);
                 }
 
 
                 dateInMs = dateInMs + Constants.millisToAdd;
             }
-
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                emptyReservations.sort((e1, e2) -> new Long(e1.getStartTime()).compareTo(new Long(e2.getStartTime())));
+            }
             return emptyReservations;
         } catch (ParseException e) {
             e.printStackTrace();

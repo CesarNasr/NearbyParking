@@ -12,6 +12,7 @@ import database.entities.Parking;
 import database.entities.ParkingDAO;
 import database.entities.Reservation;
 import database.entities.ReservationDAO;
+import models.TimeReservationModel;
 
 public class DatabaseHelper {
     CarUserDAO carUserDAO;
@@ -216,7 +217,7 @@ public class DatabaseHelper {
     }
 
 
-    public static class GetAvailableParkingTimes extends AsyncTask<Void, Void, List<Long>> { // TODO getAvailableSlots change it all
+    public static class GetAvailableParkingTimes extends AsyncTask<Void, Void, List<TimeReservationModel>> { // TODO getAvailableSlots change it all
         private ReservationDAO reservationDAO;
         private int userId, parkingId, parkingCapacity;
         private Long date;
@@ -233,8 +234,8 @@ public class DatabaseHelper {
         }
 
         @Override
-        protected List<Long> doInBackground(Void... Avoid) {
-            List<Long> list = reservationDAO.getAvailableSlots(parkingId, parkingCapacity, userId, date);
+        protected List<TimeReservationModel> doInBackground(Void... Avoid) {
+            List<TimeReservationModel> list = reservationDAO.getAvailableSlots(parkingId, parkingCapacity, userId, date);
 //            List<Reservation> availableReservations = new ArrayList<>();
 
 
@@ -242,7 +243,7 @@ public class DatabaseHelper {
         }
 
         @Override
-        protected void onPostExecute(List<Long> reservations) {
+        protected void onPostExecute(List<TimeReservationModel> reservations) {
             super.onPostExecute(reservations);
 
             if (reservations == null) {
@@ -393,7 +394,7 @@ public class DatabaseHelper {
 
 
     public interface EmptySlotsDBListener {
-        void onSuccess(List<Long> emptyReservationsTimeOnly);
+        void onSuccess(List<TimeReservationModel> emptyReservationsTimeOnly);
 
         void onFailure();
     }

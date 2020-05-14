@@ -1,6 +1,7 @@
 package com.example.nearbyparking.ui.fragments;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +10,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.nearbyparking.R;
@@ -29,6 +32,7 @@ import database.DatabaseHelper;
 import database.entities.CarUser;
 import database.entities.Parking;
 import database.entities.Reservation;
+import models.TimeReservationModel;
 
 public class ReserveFragment extends Fragment {
     private CalendarView calendarView;
@@ -44,7 +48,8 @@ public class ReserveFragment extends Fragment {
     private List stringTimes;
     private List timeStamps = new ArrayList<Long>();
     private ArrayAdapter<String> adapter;
-
+private Boolean canPressReserveButton = true;
+    private Long onCalendarSelectMillis;
 
     public ReserveFragment() {
     }
@@ -79,12 +84,12 @@ public class ReserveFragment extends Fragment {
 
         gson = new Gson();
         parking = gson.fromJson(mParam1, Parking.class);
-
+        onCalendarSelectMillis = System.currentTimeMillis();
 
         reserve = view.findViewById(R.id.btn_reserve);
 
         // get time from database
-        getEmptyReservationsData(System.currentTimeMillis());
+        getEmptyReservationsData(onCalendarSelectMillis);
         timeSpinner = view.findViewById(R.id.times_spinner);
         calendarView = view.findViewById(R.id.calendar);
 
@@ -95,15 +100,16 @@ public class ReserveFragment extends Fragment {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 GregorianCalendar cal = new GregorianCalendar(year, month, dayOfMonth);
-                long millis = cal.getTimeInMillis();
-                getEmptyReservationsData(millis);
+                onCalendarSelectMillis = cal.getTimeInMillis();
+                getEmptyReservationsData(onCalendarSelectMillis);
             }
         });
         reserve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (timeSpinner.getSelectedItem() == null) {
+
+                if (timeSpinner.getSelectedItem() == null || !canPressReserveButton) {
                     Toast.makeText(context, "Oops! You missed your place for this day !", Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -124,14 +130,8 @@ public class ReserveFragment extends Fragment {
                 new DatabaseHelper.InsertReservation(reservation, databaseHelper.getReservationDAO(), new DatabaseHelper.ReserveDBListener() {
                     @Override
                     public void onSuccess(Long inserted) {
-                        stringTimes.remove(selectedItemPosition);
-                        timeStamps.remove(selectedItemPosition);
-
-                        adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, stringTimes);
-                        timeSpinner.setAdapter(adapter);
-
+                        getEmptyReservationsData(onCalendarSelectMillis);
                         Toast.makeText(context, "Reservation Successful", Toast.LENGTH_LONG).show();
-
                     }
 
                     @Override
@@ -148,7 +148,7 @@ public class ReserveFragment extends Fragment {
     private void getEmptyReservationsData(Long millis) {
         new DatabaseHelper.GetAvailableParkingTimes(parking.capacity, carUser.id, parking.id, millis, databaseHelper.getReservationDAO(), new DatabaseHelper.EmptySlotsDBListener() {
             @Override
-            public void onSuccess(List<Long> emptyReservationsTimeOnly) {
+            public void onSuccess(final List<TimeReservationModel> emptyReservationsTimeOnly) {
 
                 stringTimes = new ArrayList<String>();
                 timeStamps = new ArrayList<Long>();
@@ -158,9 +158,8 @@ public class ReserveFragment extends Fragment {
                 for (int i = 0; i < emptyReservationsTimeOnly.size(); i++) {
 
 
-                    Long fromMs = emptyReservationsTimeOnly.get(i);
-                    Long toMs = emptyReservationsTimeOnly.get(i) + 7140000;
-
+                    Long fromMs = emptyReservationsTimeOnly.get(i).getStartTime();
+                    Long toMs = emptyReservationsTimeOnly.get(i).getStartTime() + 7140000;
 
                     if (currentTimeStamp - fromMs <= 0) {
                         timeStamps.add(fromMs);
@@ -169,13 +168,50 @@ public class ReserveFragment extends Fragment {
                         stringTimes.add(fromTime + " - " + toTime);
                     }
                 }
-                adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, stringTimes);
+
+                adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, stringTimes) {
+                    @Override
+                    public boolean isEnabled(int position) {
+
+                        if (emptyReservationsTimeOnly.get(position).getCanReserve())
+                            return true;
+
+                        return false;
+                    }
+
+                    @Override
+                    public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                        View mView = super.getDropDownView(position, convertView, parent);
+                        TextView mTextView = (TextView) mView;
+
+                        if (!emptyReservationsTimeOnly.get(position).getCanReserve()) {
+                            mTextView.setTextColor(Color.GRAY);
+                        } else {
+                            mTextView.setTextColor(Color.BLACK);
+                        }
+                        return mView;
+                    }
+                };
                 timeSpinner.setAdapter(adapter);
+                timeSpinner.setSelection(getFirstSelectableIndex(emptyReservationsTimeOnly));
             }
 
             @Override
             public void onFailure() {
             }
         }).execute();
+    }
+
+
+    private int getFirstSelectableIndex(List<TimeReservationModel> list) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getCanReserve()) {
+                canPressReserveButton = true;
+
+                return i;
+            }
+        }
+        canPressReserveButton = false;
+        return -1;
     }
 }
