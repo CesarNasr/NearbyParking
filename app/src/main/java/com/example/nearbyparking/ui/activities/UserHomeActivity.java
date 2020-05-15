@@ -30,6 +30,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.Menu;
@@ -73,7 +74,7 @@ public class UserHomeActivity extends AppCompatActivity
 
         View header = navigationView.getHeaderView(0);
 
-        textName =  header.findViewById(R.id.username_text);
+        textName = header.findViewById(R.id.username_text);
         textName.setText("WELCOME, " + user.userName);
         startMapsFragment();
 
@@ -100,6 +101,8 @@ public class UserHomeActivity extends AppCompatActivity
     void startReserveFragment() {
         Fragment fragment = new AreaPickerFragment();
         if (visibleFragmentNb != 4) {
+
+
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.mainFrame, fragment);
             ft.commit();
@@ -159,6 +162,8 @@ public class UserHomeActivity extends AppCompatActivity
         int id = item.getItemId();
         Fragment fragment;
 
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
         if (id == R.id.nav_home) {
             startMapsFragment();

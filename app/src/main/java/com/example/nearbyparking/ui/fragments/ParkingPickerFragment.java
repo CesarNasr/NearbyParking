@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -102,8 +103,9 @@ public class ParkingPickerFragment extends Fragment {
 
     private void startTimePickerFragment(Parking parking) {
         ReserveFragment reserveFragment = new ReserveFragment().newInstance(parking);
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 
-        getActivity().getSupportFragmentManager().beginTransaction()
+        fragmentManager.beginTransaction()
                 .replace(R.id.mainFrame, reserveFragment, "findThisFragment")
                 .addToBackStack(null)
                 .commit();

@@ -23,8 +23,8 @@ public abstract class ReservationDAO {
 
     //        @Query("SELECT * FROM RESERVATION_TABLE WHERE user_id = :userId AND :parkingId = parking_id AND from_time BETWEEN :dayStart AND :dayEnd")
     //    public abstract List<Reservation> getReservationsPerDay(int parkingId, int userId, java.util.Date dayStart, java.util.Date dayEnd);
-    @Query("SELECT * FROM RESERVATION_TABLE WHERE :parkingId = parking_id AND from_time BETWEEN :dayStart AND :dayEnd")
-    public abstract List<Reservation> getReservationsPerDay(int parkingId, java.util.Date dayStart, java.util.Date dayEnd);
+    @Query("SELECT * FROM RESERVATION_TABLE WHERE  user_id = :userId AND  :parkingId = parking_id AND from_time BETWEEN :dayStart AND :dayEnd")
+    public abstract List<Reservation> getReservationsPerDay(int parkingId, int userId, java.util.Date dayStart, java.util.Date dayEnd);
 
 
 //    @Query("SELECT from_time, to_time, user_id, parking_id, id, rowid , count(*) AS countt FROM RESERVATION_TABLE WHERE :parkingId = parking_id AND from_time BETWEEN :dayStart AND :dayEnd GROUP BY from_time, to_time ")
@@ -118,7 +118,7 @@ public abstract class ReservationDAO {
             Date endDate = new Date(endDay.getTime());
 
 
-            List<Reservation> reservationList = getReservationsPerDay(parkingId, startDate, endDate);
+            List<Reservation> reservationList = getReservationsPerDay(parkingId, userId , startDate, endDate);
 
             List<Long> reservationStartTimestampList = new ArrayList<>();
             for (int i = 0; i < reservationList.size(); i++) {
