@@ -142,12 +142,12 @@ public class ViewReservationsDialogFragment extends DialogFragment {
     private void getReservations(int parkingId, final Long date) {
 
 //        SimpleDateFormat formatterDate = new SimpleDateFormat("dd/MM/yyyy");
-        SimpleDateFormat formatterDateTime = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss a");
-        String dateString = formatterDateTime.format(new Date(date));
-
-        java.util.Date startDay = null;
-        try {
-            startDay = formatterDateTime.parse(dateString);
+//        SimpleDateFormat formatterDateTime = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss a");
+//        String dateString = formatterDateTime.format(new Date(date));
+//
+//        java.util.Date startDay = null;
+//        try {
+//            startDay = formatterDateTime.parse(dateString);
 
 //            java.util.Date endDay = formatterDateTime.parse(dateString + " 23:59:59");
            Date startDate = new Date(date);
@@ -167,9 +167,9 @@ public class ViewReservationsDialogFragment extends DialogFragment {
                     Toast.makeText(context, "Something went wrong", Toast.LENGTH_LONG).show();
                 }
             }).execute();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
 
 
     }
