@@ -2,6 +2,7 @@ package database.entities;
 
 import android.os.Build;
 
+import androidx.annotation.RequiresApi;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
@@ -98,6 +99,7 @@ public abstract class ReservationDAO {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Transaction
     public List<TimeReservationModel> getAvailableSlots(int parkingId, int parkingCapacity, int userId, Long date) {
 
@@ -118,21 +120,22 @@ public abstract class ReservationDAO {
             Date endDate = new Date(endDay.getTime());
 
 
-            List<Reservation> reservationList = getReservationsPerDay(parkingId, userId , startDate, endDate);
+//            List<Reservation> reservationList = getReservationsPerDay(parkingId, userId , startDate, endDate);
+            List<Reservation> allResrvationsPerParkingPerDay = getReservationsPerParking(parkingId, startDate, endDate);
 
-            List<Long> reservationStartTimestampList = new ArrayList<>();
-            for (int i = 0; i < reservationList.size(); i++) {
-                reservationStartTimestampList.add(reservationList.get(i).fromTime.getTime());
-            }
+//            List<Long> reservationStartTimestampList = new ArrayList<>();
+//            for (int i = 0; i < allResrvationsPerParkingPerDay.size(); i++) {
+//                reservationStartTimestampList.add(allResrvationsPerParkingPerDay.get(i).fromTime.getTime());
+//            }
 
 
-            for (int j = 0; j < reservationList.size(); j++) {
-                Reservation reservation = reservationList.get(j);
+            for (int j = 0; j < allResrvationsPerParkingPerDay.size(); j++) {
+                Reservation reservation = allResrvationsPerParkingPerDay.get(j);
 
-                if (reservation != null) {
+                if (reservation != null && !emptyReservations.stream().anyMatch(item -> reservation.fromTime.getTime() == (item.getStartTime()))) {
 
                     TimeReservationModel timeReservationModel;
-                    if (getNumberOfReservationsPer2Hours(reservationList, reservation) < parkingCapacity && !checkIfUserIdExistsInReservation(userId, reservationList, reservation)) {
+                    if (getNumberOfReservationsPer2Hours(allResrvationsPerParkingPerDay, reservation) < parkingCapacity && !checkIfUserIdExistsInReservation(userId, reservation) && !checkIfReservationIsInPast(reservation.fromTime.getTime())) {
 
                         timeReservationModel = new TimeReservationModel(reservation.fromTime.getTime(), true);
 
@@ -148,17 +151,28 @@ public abstract class ReservationDAO {
 
 
             Long dateInMs = startDate.getTime();
+
             for (int i = 0; i < 12; i++) {
+                TimeReservationModel timeReservationModel;
 
-                TimeReservationModel timeReservationModel = new TimeReservationModel(dateInMs, true);
+                if (checkIfReservationIsInPast(dateInMs)) {
+                    timeReservationModel = new TimeReservationModel(dateInMs, false);
 
-                if (!reservationStartTimestampList.contains(timeReservationModel.getStartTime())) { //TODO check for problem/error!!!!
+                } else {
+
+                    timeReservationModel = new TimeReservationModel(dateInMs, true);
+
+                }
+
+                if (!emptyReservations.stream().anyMatch(item -> timeReservationModel.getStartTime().equals(item.getStartTime()))) {
                     emptyReservations.add(timeReservationModel);
                 }
 
 
                 dateInMs = dateInMs + Constants.millisToAdd;
             }
+
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 emptyReservations.sort((e1, e2) -> new Long(e1.getStartTime()).compareTo(new Long(e2.getStartTime())));
             }
@@ -181,14 +195,23 @@ public abstract class ReservationDAO {
         return reservationCount;
     }
 
-    private Boolean checkIfUserIdExistsInReservation(int userId, List<Reservation> reservationList, Reservation reservation) {
-        Boolean userIdExists = false;
-        for (int i = 0; i < reservationList.size(); i++) {
-            if (reservationList.get(i).userId == userId)
-                userIdExists = true;
+    private boolean checkIfReservationIsInPast(Long startTime) {
 
-
+        if (startTime - System.currentTimeMillis() < 0) {
+            return true;
         }
-        return userIdExists;
+
+        return false;
+    }
+
+    private Boolean checkIfUserIdExistsInReservation(int userId, Reservation reservation) {
+//        Boolean userIdExists = false;
+//        for (int i = 0; i < reservationList.size(); i++) {
+        return reservation.userId == userId;
+//            return true;
+//        else return false;
+//
+////        }
+//        return userIdExists;
     }
 }

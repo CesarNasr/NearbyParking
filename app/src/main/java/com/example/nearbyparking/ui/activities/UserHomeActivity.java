@@ -161,7 +161,7 @@ public class UserHomeActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         Fragment fragment;
-
+ 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 

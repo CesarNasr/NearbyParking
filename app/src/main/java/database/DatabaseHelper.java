@@ -1,9 +1,13 @@
 package database;
 
 import android.os.AsyncTask;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 
 import com.example.nearbyparking.MyApplication;
 
+import java.util.Date;
 import java.util.List;
 
 import database.entities.CarUser;
@@ -233,6 +237,7 @@ public class DatabaseHelper {
             this.emptySlotsDBListener = emptySlotsDBListener;
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         protected List<TimeReservationModel> doInBackground(Void... Avoid) {
             List<TimeReservationModel> list = reservationDAO.getAvailableSlots(parkingId, parkingCapacity, userId, date);
@@ -294,11 +299,11 @@ public class DatabaseHelper {
     public static class GetReservedByParkingAndStartTimer extends AsyncTask<Void, Void, List<Reservation>> { // TODO getAvailableSlots change it all
         private ReservationDAO reservationDAO;
         private int parkingId, parkingCapacity;
-        private java.sql.Date  startDate;
+        private Date  startDate;
 
         private ReservationsPerParkingDBListener reservationsPerParkingDBListener;
 
-        public GetReservedByParkingAndStartTimer(int parkingId, java.sql.Date startDate,  ReservationDAO reservationDAO, ReservationsPerParkingDBListener reservationsPerParkingDBListener) {
+        public GetReservedByParkingAndStartTimer(int parkingId, Date startDate, ReservationDAO reservationDAO, ReservationsPerParkingDBListener reservationsPerParkingDBListener) {
             this.reservationDAO = reservationDAO;
             this.parkingId = parkingId;
 //            this.endDate = endDate;

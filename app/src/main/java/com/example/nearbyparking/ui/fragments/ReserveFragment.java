@@ -161,12 +161,12 @@ private Boolean canPressReserveButton = true;
                     Long fromMs = emptyReservationsTimeOnly.get(i).getStartTime();
                     Long toMs = emptyReservationsTimeOnly.get(i).getStartTime() + 7140000;
 
-                    if (currentTimeStamp - fromMs <= 0) {
+//                    if (currentTimeStamp - fromMs <= 0) {
                         timeStamps.add(fromMs);
                         String fromTime = formatter.format(new Date(fromMs));
                         String toTime = formatter.format(new Date(toMs));
                         stringTimes.add(fromTime + " - " + toTime);
-                    }
+//                    }
                 }
 
                 adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, stringTimes) {

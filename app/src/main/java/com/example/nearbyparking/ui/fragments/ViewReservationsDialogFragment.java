@@ -142,7 +142,7 @@ public class ViewReservationsDialogFragment extends DialogFragment {
     private void getReservations(int parkingId, final Long date) {
 
 //        SimpleDateFormat formatterDate = new SimpleDateFormat("dd/MM/yyyy");
-        SimpleDateFormat formatterDateTime = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+        SimpleDateFormat formatterDateTime = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss a");
         String dateString = formatterDateTime.format(new Date(date));
 
         java.util.Date startDay = null;
@@ -150,7 +150,7 @@ public class ViewReservationsDialogFragment extends DialogFragment {
             startDay = formatterDateTime.parse(dateString);
 
 //            java.util.Date endDay = formatterDateTime.parse(dateString + " 23:59:59");
-            java.sql.Date startDate = new java.sql.Date(startDay.getTime());
+           Date startDate = new Date(date);
 //            java.sql.Date endDate = new java.sql.Date(endDay.getTime());
 
 
