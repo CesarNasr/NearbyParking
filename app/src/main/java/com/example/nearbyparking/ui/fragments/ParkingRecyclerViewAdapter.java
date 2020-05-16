@@ -39,9 +39,9 @@ public class ParkingRecyclerViewAdapter extends RecyclerView.Adapter<ParkingRecy
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         String name = parkingList.get(position).parkingName;
-        String area = String.valueOf(parkingList.get(position).areaName);
+        String parkingAddress = String.valueOf(parkingList.get(position).parkingAddress);
         holder.parkingName.setText(name);
-//        holder.parkingCapacity.setText(area);
+        holder.parkingAddress.setText(parkingAddress);
 
     }
 
@@ -55,13 +55,13 @@ public class ParkingRecyclerViewAdapter extends RecyclerView.Adapter<ParkingRecy
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView parkingName;
-        TextView parkingCapacity;
+        TextView parkingAddress;
         LinearLayout parentLayout;
 
         ViewHolder(View itemView) {
             super(itemView);
             parkingName = itemView.findViewById(R.id.parking_name);
-            parkingCapacity = itemView.findViewById(R.id.parking_capacity);
+            parkingAddress = itemView.findViewById(R.id.parkingAddress);
             parentLayout = itemView.findViewById(R.id.item_parent);
 
 

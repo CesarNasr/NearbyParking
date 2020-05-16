@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="2dp"
-    android:background="@color/lightBlue"
+    android:background="@color/darkGrey"
     android:clickable="true"
     android:elevation="10dp"
     android:orientation="horizontal">
@@ -38,7 +38,7 @@
 
         <TextView
 
-            android:id="@+id/parking_capacity"
+            android:id="@+id/parkingAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"

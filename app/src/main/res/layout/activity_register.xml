@@ -73,9 +73,9 @@
                         android:id="@+id/username"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="text"
+                        android:hint="Ex: BeirutPark01"
 
-                        android:hint="Ex: BeirutPark01" />
+                        android:inputType="text" />
 
                 </LinearLayout>
 
@@ -130,9 +130,9 @@
                     <EditText
                         android:id="@+id/parkingName"
                         android:layout_width="match_parent"
-                        android:inputType="text"
                         android:layout_height="wrap_content"
-                        android:hint="Ex: Lot 128" />
+                        android:hint="Ex: Lot 128"
+                        android:inputType="text" />
 
                 </LinearLayout>
 
@@ -174,11 +174,20 @@
                         android:layout_height="wrap_content"
                         android:text="Parking Location :" />
 
-                    <Spinner
-                        android:id="@+id/parkingOwnerSpinner"
+                    <RelativeLayout
+                        android:id="@+id/rel_spinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:spinnerMode="dropdown" />
+                        android:background="@drawable/bg_borders">
+
+                        <Spinner
+                            android:id="@+id/parkingOwnerSpinner"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:background="@drawable/spinner_border"
+                            android:spinnerMode="dropdown" />
+                    </RelativeLayout>
 
                 </LinearLayout>
 
@@ -302,10 +311,10 @@
                     <EditText
                         android:id="@+id/carPlatenumber"
                         android:layout_width="match_parent"
-                        android:inputType="text"
-
                         android:layout_height="wrap_content"
-                        android:hint="A817266" />
+
+                        android:hint="A817266"
+                        android:inputType="text" />
 
                 </LinearLayout>
 
@@ -325,10 +334,10 @@
                     <EditText
                         android:id="@+id/carDescription"
                         android:layout_width="match_parent"
-                        android:inputType="text"
-
                         android:layout_height="wrap_content"
-                        android:hint="Hyudai i10" />
+
+                        android:hint="Hyudai i10"
+                        android:inputType="text" />
                 </LinearLayout>
 
                 <Button

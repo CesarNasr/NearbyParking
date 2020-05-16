@@ -15,15 +15,12 @@
         android:orientation="vertical">
         <!-- TODO: Update blank fragment layout -->
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="Privacy Policy"
-            android:textAllCaps="false"
-            android:textColor="#3F51B5"
-            android:textSize="50dp"
-            android:textStyle="bold" />
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_margin="15dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_parking" />
 
         <TextView
             android:layout_width="match_parent"

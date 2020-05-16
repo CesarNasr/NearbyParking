@@ -1,64 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-android:layout_marginTop="50dp"
     tools:context=".ui.activities.MasterActivity">
 
-    <ImageView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_gravity="center"
-        android:layout_margin="20dp"
-        android:src="@drawable/ic_parking" />
-
-
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        android:layout_margin="30dp"
-        android:gravity="center"
-        android:text="Parkings Make Life Easier!"
-        android:textColor="@color/blue"
-        android:textSize="25dp"
-        android:textStyle="italic|bold" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="300dp"
+            android:layout_gravity="center"
+            android:gravity="center">
 
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="50dp"
-        android:text="Imagine how much easier life would be if you had access to all parkings. No more asking strangers if they had change for a fiver. No more rooting around ..."
-        android:textSize="17dp" />
 
-    <Button
-        android:id="@+id/user_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/shape_bg_rounded"
-        android:text="I want to reserve a Parking"
-        android:textAllCaps="false"
-        android:textColor="#ffffff" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="300dp"
+                android:background="@drawable/reserve_or_owner"
+                android:scaleType="centerCrop" />
 
-    <Button
-        android:id="@+id/owner_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/shape_bg_rounded"
-        android:text="I am a parking owner"
-        android:textAllCaps="false"
-        android:textColor="#ffffff" />
-</LinearLayout>
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerInParent="true"
+
+                android:src="@drawable/ic_parking" />
+
+        </RelativeLayout>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_margin="30dp"
+            android:gravity="center"
+            android:text="Parkings Make Life Easier!"
+            android:textColor="@color/blue"
+            android:textSize="25dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="50dp"
+            android:text="Imagine how much easier life would be if you had access to all parkings. No more asking strangers if they had change for a fiver. No more rooting around ..."
+            android:textColor="@color/darkGrey"
+            android:textSize="17dp" />
+
+        <Button
+            android:id="@+id/user_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/shape_bg_rounded"
+            android:text="I want to reserve a Parking"
+            android:textAllCaps="false"
+            android:textColor="#ffffff" />
+
+        <Button
+            android:id="@+id/owner_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/shape_bg_rounded"
+            android:text="I am a parking owner"
+            android:textAllCaps="false"
+            android:textColor="#ffffff" />
+    </LinearLayout>
+</ScrollView>

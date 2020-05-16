@@ -83,6 +83,7 @@ public class ViewReservationsDialogFragment extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setStyle(STYLE_NO_FRAME, android.R.style.Theme_Holo_Light);
 
         Gson gson = new Gson();
 
