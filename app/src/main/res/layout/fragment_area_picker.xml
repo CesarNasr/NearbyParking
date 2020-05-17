@@ -40,22 +40,24 @@
             android:textSize="15dp" />
 
 
-<RelativeLayout
-    android:id="@+id/rel_spinner"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_below="@+id/desc_text"
-    android:background="@drawable/bg_borders"
-    android:layout_centerInParent="true">
-        <Spinner
-            android:id="@+id/choose_area_spinner"
+        <RelativeLayout
+            android:id="@+id/rel_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/spinner_border"
+            android:layout_below="@+id/desc_text"
             android:layout_centerInParent="true"
+            android:background="@drawable/bg_borders">
 
-            android:spinnerMode="dropdown" />
-    </RelativeLayout>
+            <Spinner
+                android:id="@+id/choose_area_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+
+                android:spinnerMode="dropdown" />
+            <!--    android:background="@drawable/spinner_border"-->
+
+        </RelativeLayout>
 
         <Button
             android:id="@+id/continue_btn"

@@ -153,7 +153,7 @@ private Boolean canPressReserveButton = true;
                 stringTimes = new ArrayList<String>();
                 timeStamps = new ArrayList<Long>();
                 Long currentTimeStamp = System.currentTimeMillis();
-                SimpleDateFormat formatter = new SimpleDateFormat("hh:mm a");
+                SimpleDateFormat formatter = new SimpleDateFormat("hh:mma");
 
                 for (int i = 0; i < emptyReservationsTimeOnly.size(); i++) {
 

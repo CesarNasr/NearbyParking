@@ -62,8 +62,10 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
 
-                android:background="@drawable/spinner_border"
                 android:spinnerMode="dropdown" />
+
+<!--            android:background="@drawable/spinner_border"-->
+
         </RelativeLayout>
 
 
