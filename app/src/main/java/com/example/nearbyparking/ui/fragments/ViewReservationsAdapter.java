@@ -58,10 +58,10 @@ public class ViewReservationsAdapter extends RecyclerView.Adapter<ViewReservatio
         Long reservationTimeInMillis = reservationList.get(position).fromTime.getTime();
         String dateString = formatterDateTime.format(new Date(reservationTimeInMillis));
 
-        holder.parkingName.setText("Venue: " + parkingName);
-        holder.userName.setText("Username: " + userName);
-        holder.carPlate.setText("Car plate: " + carPlate);
-        holder.carName.setText("Car type: " + carType);
+        holder.parkingName.setText( parkingName);
+        holder.userName.setText(userName);
+        holder.carPlate.setText( carPlate);
+        holder.carName.setText(carType);
         holder.reservationTime.setText(dateString);
         holder.reservationNumber.setText(reservationNumber);
     }
