@@ -135,7 +135,7 @@ public abstract class ReservationDAO {
                 if (reservation != null && !emptyReservations.stream().anyMatch(item -> reservation.fromTime.getTime() == (item.getStartTime()))) {
 
                     TimeReservationModel timeReservationModel;
-                    if (getNumberOfReservationsPer2Hours(allResrvationsPerParkingPerDay, reservation) < parkingCapacity && !checkIfUserIdExistsInReservation(userId, reservation) && !checkIfReservationIsInPast(reservation.fromTime.getTime())) {
+                    if (getNumberOfReservationsPer2Hours(allResrvationsPerParkingPerDay, reservation) < parkingCapacity && !checkIfUserIdExistsInReservation(userId, reservation) && !checkIfReservationIsInPast(reservation.toTime.getTime())) {
 
                         timeReservationModel = new TimeReservationModel(reservation.fromTime.getTime(), true);
 
@@ -155,7 +155,7 @@ public abstract class ReservationDAO {
             for (int i = 0; i < 12; i++) {
                 TimeReservationModel timeReservationModel;
 
-                if (checkIfReservationIsInPast(dateInMs)) {
+                if (checkIfReservationIsInPast(dateInMs + Constants.millisToAdd)) {
                     timeReservationModel = new TimeReservationModel(dateInMs, false);
 
                 } else {
